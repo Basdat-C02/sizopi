@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block meta %}
+<title>Register Pengunjung</title>
+{% endblock meta %}
+
+{% block content %}
+<div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="border shadow-sm p-4 rounded-3 bg-white" style="width: 500px;">
+        <h1 class="text-center mb-4">Registrasi Pengunjung</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label>Username</label>
+                <input type="text" name="username" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Konfirmasi Password</label>
+                <input type="password" name="confirm_password" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nama Depan</label>
+                <input type="text" name="nama_depan" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nama Tengah (Opsional)</label>
+                <input type="text" name="nama_tengah" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>Nama Belakang</label>
+                <input type="text" name="nama_belakang" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nomor Telepon</label>
+                <input type="text" name="no_telepon" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Alamat Lengkap</label>
+                <input type="text" name="alamat" class="form-control" required>
+            </div>
+            <div class="mb-4">
+                <label>Tanggal Lahir</label>
+                <input type="date" name="tanggal_lahir" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Daftar</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}
