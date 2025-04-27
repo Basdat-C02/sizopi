@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block meta %}
+<title>SIZOPI - C02</title>
+{% endblock meta %}
+
+{% block content %}
+<div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="border shadow-sm p-4 rounded-3 d-flex flex-column justify-content-center align-items-center bg-white" style="width: 300px; height: auto;">
+        <div  style="width: 400px; height: auto;">
+            <h1 class="text-center mb-4">SIZOPI - C02</h1>
+            <div class="d-flex flex-column gap-2 w-100 align-items-center">
+                <a href="{% url 'authentication:login' %}" class="btn btn-primary w-50 btn-lg">Login</a>
+                <a href="{% url 'authentication:choose_role' %}" class="btn w-50 btn-secondary btn-lg">Register</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
