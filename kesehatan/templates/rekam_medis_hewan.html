@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto p-8">
+    <h1 class="text-3xl font-semibold text-center mb-8">Rekam Medis Hewan</h1>
+        
+
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+
+        <div class="d-flex justify-content-between mb-6">
+            <div>
+                <a href="{% url 'kesehatan:create_rekam_medis' id_hewan %}" class="btn btn-primary btn-lg px-4 py-2 rounded shadow-sm">
+                    Tambah Rekam Medis
+                </a>
+            </div>
+        </div>
+        
+        <table class="min-w-full bg-white border border-gray-300 rounded-md">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="py-3 px-4 text-left">Tanggal Pemeriksaan</th>
+                    <th class="py-3 px-4 text-left">Nama Dokter</th>
+                    <th class="py-3 px-4 text-left">Status Kesehatan</th>
+                    <th class="py-3 px-4 text-left">Diagnosis</th>
+                    <th class="py-3 px-4 text-left">Pengobatan</th>
+                    <th class="py-3 px-4 text-left">Catatan Tindak Lanjut</th>
+                    <th class="py-3 px-4 text-left">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in catatan_medis %}
+                    <tr class="border-t">
+                        <td class="py-3 px-4">{{ record.tanggal_pemeriksaan }}</td>
+                        <td class="py-3 px-4">{{ record.username_dh }}</td>
+                        <td class="py-3 px-4">{{ record.status_kesehatan }}</td>
+                        <td class="py-3 px-4">{{ record.diagnosis }}</td>
+                        <td class="py-3 px-4">{{ record.pengobatan }}</td>
+                        <td class="py-3 px-4">
+                            {% if record.catatan_tindak_lanjut %}
+                                {{ record.catatan_tindak_lanjut }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td class="py-3 px-4">
+                            <a href="{% url 'kesehatan:edit_rekam_medis' record.id_hewan %}" class="text-blue-500 hover:underline">Edit</a>
+                            |
+                            <a href="{% url 'kesehatan:delete_rekam_medis' record.id_hewan %}" class="text-red-500 hover:underline">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" class="py-3 px-4 text-center text-gray-500">No data available</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

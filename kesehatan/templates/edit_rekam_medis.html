@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-xl mx-auto p-6 mt-10 border rounded-lg bg-white shadow-md">
+    <h1 class="text-2xl font-bold text-center mb-6">Edit Rekam Medis</h1>
+
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+
+        <div>
+            <label class="block font-medium text-gray-700 mb-1">Catatan Tindak Lanjut: <span class="text-gray-400">(opsional)</span></label>
+            <input type="text" name="catatan_tindak_lanjut" value="{{ catatan.catatan_tindak_lanjut }}" class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label class="block font-medium text-gray-700 mb-1">Diagnosa Baru:</label>
+            <input type="text" name="diagnosis" value="{{ catatan.diagnosis }}" class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div>
+            <label class="block font-medium text-gray-700 mb-1">Pengobatan Baru:</label>
+            <input type="text" name="pengobatan" value="{{ catatan.pengobatan }}" class="w-full border rounded px-3 py-2">
+        </div>
+
+        <div class="flex justify-center space-x-4 mt-6">
+            <button type="submit" class="text-blue-500 hover:underline font-semibold">SIMPAN</button>
+            <a href="{% url 'kesehatan:rekam_medis_hewan' pk %}" class="text-blue-500 hover:underline font-semibold">BATAL</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
