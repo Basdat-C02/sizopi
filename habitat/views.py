@@ -74,3 +74,69 @@ def edit_habitat_view(request):
         'habitat': data,
     }
     return render(request, 'edit_habitat/index.html', context)
+
+def detail_habitat_view(request):
+    # Fetch habitat details based on habitat_id
+    habitat = {
+        "nama": "Savanna",
+        "luas_area": 912.13,
+        "kapasitas": 100,
+        "status": "Padang rumput luas dengan pohon tersebar, iklim tropis dengan musim hujan dan kemarau yang kering."
+    }
+    daftar_hewan = [
+        {
+            "nama": "Leo",
+            "spesies": "Panthera leo",
+            "asal_hewan": "Afrika",
+            "tanggal_lahir": "2018-06-15",
+            "status_kesehatan": "Sehat",
+        },
+        {
+            "nama": "Nala",
+            "spesies": "Panthera leo",
+            "asal_hewan": "Afrika",
+            "tanggal_lahir": "2019-04-12",
+            "status_kesehatan": "Sehat",
+        },
+        {
+            "nama": "Simba",
+            "spesies": "Panthera leo",
+            "asal_hewan": "Afrika",
+            "tanggal_lahir": "2017-03-10",
+            "status_kesehatan": "Sehat",
+        },
+        {
+            "nama": "Toby",
+            "spesies": "Struthio camelus",
+            "asal_hewan": "Afrika",
+            "tanggal_lahir": "2015-04-07",
+            "status_kesehatan": "Sehat",
+        },
+        {
+            "nama": "Trixie",
+            "spesies": "Giraffa camelopardalis",
+            "asal_hewan": "Afrika",
+            "tanggal_lahir": "2015-03-21",
+            "status_kesehatan": "Sehat",
+        },
+        {
+            "nama": "Ellie",
+            "spesies": "Loxodonta africana",
+            "asal_hewan": "Afrika",
+            "tanggal_lahir": "2014-11-11",
+            "status_kesehatan": "Sakit",
+        },
+        {
+            "nama": "Hazel",
+            "spesies": "Hyaena hyaena",
+            "asal_hewan": "Afrika",
+            "tanggal_lahir": "2015-12-24",
+            "status_kesehatan": "Sakit",
+        }
+    ]
+
+    context = {
+        'habitat': habitat,
+        'daftar_hewan' : daftar_hewan,
+    }
+    return render(request, 'detail_habitat/index.html', context)
