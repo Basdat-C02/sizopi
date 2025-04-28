@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'authentication',
     'satwa',
     'habitat',
+    'adopsi',
 ]
 
 MIDDLEWARE = [

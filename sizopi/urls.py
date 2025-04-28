@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('authentication.urls', namespace='authentication')),
     path('', include('habitat.urls', namespace='habitat')),
     path('', include('satwa.urls', namespace='satwa')),
+    path('', include('adopsi.urls', namespace='adopsi')),
 ]
