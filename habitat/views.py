@@ -56,3 +56,9 @@ def daftar_habitat_view(request):
         'daftar_habitat': habitat,
     }
     return render(request, 'daftar_habitat/index.html', context)
+
+def add_habitat_view(request):
+    if request.method == 'POST':
+        # Handle form submission to add a new habitat
+        pass  # Implement your logic here
+    return render(request, 'add_habitat/index.html')
