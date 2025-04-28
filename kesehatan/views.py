@@ -88,7 +88,6 @@ def edit_rekam_medis(request, pk):
     return render(request, 'edit_rekam_medis.html', {'catatan': dummy_data, 'pk': pk})
 
 def create_rekam_medis(request, pk):
-    # Dummy data for initial form
     dummy_data = {
         'tanggal_pemeriksaan': '',
         'nama_dokter': '',
@@ -99,12 +98,22 @@ def create_rekam_medis(request, pk):
     }
 
     if request.method == 'POST':
+        # Create logic
         return redirect('kesehatan:rekam_medis_hewan', pk=pk)
     
     context = {
         'form_data': dummy_data,
-        'status_options': ['Sehat', 'Sakit'],
-        'pk': pk
     }
 
-    return render(request, 'create_rekam_medis.html', context)    
+    return render(request, 'create_rekam_medis.html', context)
+
+def delete_rekam_medis(request, pk):
+    if request.method == 'POST':
+        # Delete logic
+        return redirect('kesehatan:list_rekam_medis')
+    
+    context = {
+        'pk': pk,
+    }
+    
+    return render(request, 'delete_rekam_medis.html', context)

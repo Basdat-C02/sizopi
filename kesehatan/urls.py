@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import rekam_medis_hewan, list_rekam_medis, edit_rekam_medis, create_rekam_medis
+from .views import rekam_medis_hewan, list_rekam_medis, edit_rekam_medis, create_rekam_medis, delete_rekam_medis
 
 app_name='kesehatan'
 
@@ -9,4 +9,5 @@ urlpatterns = [
     path('edit-rekam-medis/<uuid:pk>/', edit_rekam_medis, name='edit_rekam_medis'),
     path('delete-rekam-medis/<uuid:pk>/', rekam_medis_hewan, name='delete_rekam_medis'),
     path('create-rekam-medis/<uuid:pk>', create_rekam_medis, name='create_rekam_medis'),
+    path('delete-rekam-medis/<uuid:pk>/', delete_rekam_medis, name='delete_rekam_medis'),
 ]

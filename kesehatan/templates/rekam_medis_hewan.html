@@ -3,58 +3,170 @@
 {% block content %}
 <div class="max-w-7xl mx-auto p-8">
     <h1 class="text-3xl font-semibold text-center mb-8">Rekam Medis Hewan</h1>
-        
-
+    
     <div class="bg-white p-6 rounded-lg shadow-lg">
-
         <div class="d-flex justify-content-between mb-6">
             <div>
-                <a href="{% url 'kesehatan:create_rekam_medis' id_hewan %}" class="btn btn-primary btn-lg px-4 py-2 rounded shadow-sm">
+                <button class="btn btn-primary btn-lg px-4 py-2 rounded shadow-sm" data-bs-toggle="modal" data-bs-target="#createModal">
                     Tambah Rekam Medis
-                </a>
+                </button>
             </div>
         </div>
-        
-        <table class="min-w-full bg-white border border-gray-300 rounded-md">
+
+        <table class="table table-bordered">
             <thead>
-                <tr class="bg-gray-200">
-                    <th class="py-3 px-4 text-left">Tanggal Pemeriksaan</th>
-                    <th class="py-3 px-4 text-left">Nama Dokter</th>
-                    <th class="py-3 px-4 text-left">Status Kesehatan</th>
-                    <th class="py-3 px-4 text-left">Diagnosis</th>
-                    <th class="py-3 px-4 text-left">Pengobatan</th>
-                    <th class="py-3 px-4 text-left">Catatan Tindak Lanjut</th>
-                    <th class="py-3 px-4 text-left">Aksi</th>
+                <tr class="bg-light">
+                    <th>Tanggal Pemeriksaan</th>
+                    <th>Nama Dokter</th>
+                    <th>Status Kesehatan</th>
+                    <th>Diagnosis</th>
+                    <th>Pengobatan</th>
+                    <th>Catatan Tindak Lanjut</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 {% for record in catatan_medis %}
-                    <tr class="border-t">
-                        <td class="py-3 px-4">{{ record.tanggal_pemeriksaan }}</td>
-                        <td class="py-3 px-4">{{ record.username_dh }}</td>
-                        <td class="py-3 px-4">{{ record.status_kesehatan }}</td>
-                        <td class="py-3 px-4">{{ record.diagnosis }}</td>
-                        <td class="py-3 px-4">{{ record.pengobatan }}</td>
-                        <td class="py-3 px-4">
-                            {% if record.catatan_tindak_lanjut %}
-                                {{ record.catatan_tindak_lanjut }}
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
-                        <td class="py-3 px-4">
-                            <a href="{% url 'kesehatan:edit_rekam_medis' record.id_hewan %}" class="text-blue-500 hover:underline">Edit</a>
-                            |
-                            <a href="{% url 'kesehatan:delete_rekam_medis' record.id_hewan %}" class="text-red-500 hover:underline">Delete</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>{{ record.tanggal_pemeriksaan }}</td>
+                    <td>{{ record.username_dh }}</td>
+                    <td>{{ record.status_kesehatan }}</td>
+                    <td>{{ record.diagnosis }}</td>
+                    <td>{{ record.pengobatan }}</td>
+                    <td>
+                        {% if record.catatan_tindak_lanjut %}
+                            {{ record.catatan_tindak_lanjut }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editModal" onclick="populateEditForm('{{ record.id_hewan }}', '{{ record.diagnosis }}', '{{ record.pengobatan }}', '{{ record.catatan_tindak_lanjut }}')">
+                            Edit
+                        </button>
+                        |
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteUrl('{{ record.id_hewan }}')">
+                            Hapus
+                        </button>
+                    </td>
+                </tr>
                 {% empty %}
-                    <tr>
-                        <td colspan="7" class="py-3 px-4 text-center text-gray-500">No data available</td>
-                    </tr>
+                <tr>
+                    <td colspan="7" class="text-center text-muted">No data available</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
+<!-- Modal for Create Form -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Form Pencatatan Rekam Medis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'kesehatan:create_rekam_medis' id_hewan %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="tanggal_pemeriksaan" class="form-label">Tanggal Pemeriksaan:</label>
+                        <input type="date" name="tanggal_pemeriksaan" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="status_kesehatan" class="form-label">Status:</label>
+                        <select name="status_kesehatan" class="form-select">
+                            <option value="">Pilih Status</option>
+                            <option value="Sehat">Sehat</option>
+                            <option value="Sakit">Sakit</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="diagnosis" class="form-label">Diagnosa:</label>
+                        <input type="text" name="diagnosis" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="pengobatan" class="form-label">Pengobatan:</label>
+                        <input type="text" name="pengobatan" class="form-control">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Edit Form -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Rekam Medis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'kesehatan:edit_rekam_medis' id_hewan %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="diagnosis" class="form-label">Diagnosa Baru:</label>
+                        <input type="text" name="diagnosis" id="edit_diagnosis" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="pengobatan" class="form-label">Pengobatan Baru:</label>
+                        <input type="text" name="pengobatan" id="edit_pengobatan" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="catatan_tindak_lanjut" class="form-label">Catatan Tindak Lanjut:</label>
+                        <input type="text" name="catatan_tindak_lanjut" id="edit_catatan_tindak_lanjut" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Delete Confirmation -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Hapus Rekam Medis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus rekam medis ini?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                <form method="POST" id="deleteForm" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Ya</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setDeleteUrl(id_hewan) {
+        const deleteUrl = "{% url 'kesehatan:delete_rekam_medis' id_hewan %}".replace('id_hewan', id_hewan);
+        document.getElementById('deleteForm').action = deleteUrl;
+    }
+</script>
+
 {% endblock %}
