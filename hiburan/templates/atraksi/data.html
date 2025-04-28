@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+ {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Atraksi</title>
+</head>
+<body>
+    <h1>Data Atraksi</h1>
+    {% if not atraksi_entries %}
+    <p>Belum ada data atraksi.</p>
+    {% else %}
+    <table>
+        <tr>
+            <th>Nama Atraksi</th>
+            <th>Lokasi</th>
+            <th>Kapasitas</th>
+            <th>Jadwal</th>
+            <th>Hewan yang terlibat</th>
+            <th>Pelatih</th>
+            <th>Aksi</th>
+        </tr>
+
+    {% for atraksi_entry in atraksi_entries %}
+        <tr>
+            <td>{{atraksi_entry.nama}}</td>
+            <td>{{atraksi_entry.lokasi}}</td>
+            <td>{{atraksi_entry.kapasitas}}</td>
+            <td>{{atraksi_entry.jadwal}}</td>
+            <td>{{atraksi_entry.hewan_yang_terlibat}}</td>
+            <td>{{atraksi_entry.pelatih}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    {% endif %}
+
+<br />
+{% if user_role == 'staf_admin' %}
+<a href="{% url 'hiburan:create_atraksi' %}">
+  <button>Tambah Atraksi</button>
+</a>
+{% endif %}
+</body>
+</html>
+{% endblock content %}

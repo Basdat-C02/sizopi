@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+ {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Reservasi</title>
+</head>
+<body>
+    <h1>Data Reservasi</h1>
+    {% if not product_entries %}
+    <p>No products yet.</p>
+    {% else %}
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Favorite</th>
+        </tr>
+
+    {% for product_entry in product_entries %}
+        <tr>
+            <td>{{product_entry.name}}</td>
+            <td>{{product_entry.price}}</td>
+            <td>{{product_entry.description}}</td>
+            <td>{{product_entry.favorite}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    {% endif %}
+
+<br />
+
+<a href="{% url 'hiburan:create_reservasi' %}">
+  <button>Buat Reservasi</button>
+</a>
+</body>
+</html>
+{% endblock content %}

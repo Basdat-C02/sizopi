@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+ {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Wahana</title>
+</head>
+<body>
+    <!-- Form Edit Atraksi -->
+    <div class="form-container">
+        <h2>FORM EDIT ATRAKSI</h2>
+        <form>
+            <label>Nama Atraksi:</label>
+            <input type="text" name="nama_atraksi" value="Pertunjukan lumba-lumba" readonly>
+
+            <label>Lokasi:</label>
+            <input type="text" name="lokasi" value="Area Akuatik" readonly>
+
+            <label>Kapasitas Maksimum:</label>
+            <input type="number" name="kapasitas_maksimum">
+
+            <label>Pelatih Pertunjukan:</label>
+            <input type="text" name="pelatih_pertunjukan" value="Budi" readonly>
+
+            <label>Jadwal:</label>
+            <input type="time" name="jadwal">
+
+            <label>Hewan yang Terlibat:</label>
+            <input type="text" name="hewan_terlibat" value="Lumba-lumba" readonly>
+
+            <div class="buttons">
+                <a href="{% url 'hiburan:data_atraksi' %}">[SIMPAN PERUBAHAN]</a>
+                <a href="{% url 'hiburan:data_atraksi' %}">[BATAL]</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock content %}

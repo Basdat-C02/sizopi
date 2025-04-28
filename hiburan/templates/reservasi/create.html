@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+ {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Wahana</title>
+</head>
+<body>
+    <!-- Form Tambah Atraksi -->
+    <div class="form-container">
+        <h2>FORM TAMBAH ATRAKSI</h2>
+        <form>
+            <label>Nama Atraksi:</label>
+            <input type="text" name="nama_atraksi">
+
+            <label>Lokasi:</label>
+            <input type="text" name="lokasi">
+
+            <label>Kapasitas Maksimum:</label>
+            <input type="number" name="kapasitas_maksimum">
+
+            <label>Pelatih Pertunjukan:</label>
+            <select name="pelatih_pertunjukan">
+                <option value="">-- Pilih Pelatih --</option>
+                <!-- Dropdown Pelatih akan diisi dinamis -->
+            </select>
+
+            <label>Jadwal:</label>
+            <input type="time" name="jadwal">
+
+            <label>Hewan yang Terlibat:</label>
+            <select name="hewan_terlibat" multiple>
+                <!-- Multiselect hewan -->
+            </select>
+
+            <div class="buttons">
+                <a href="{% url 'hiburan:data_atraksi' %}">[SIMPAN]</a>
+                <a href="{% url 'hiburan:data_atraksi' %}">[BATAL]</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock content %}

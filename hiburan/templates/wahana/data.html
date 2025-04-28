@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+ {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Wahana</title>
+</head>
+<body>
+    <h1>Data Wahana</h1>
+    {% if not wahana_entries %}
+    <p>Belum ada data wahana.</p>
+    {% else %}
+    <table>
+        <tr>
+            <th>Nama Wahana</th>
+            <th>Kapasitas</th>
+            <th>Jadwal</th>
+            <th>Peraturan</th>
+            <th>Aksi</th>
+        </tr>
+
+    {% for wahana_entry in wahana_entries %}
+        <tr>
+            <td>{{wahana_entry.nama}}</td>
+            <td>{{wahana_entry.kapasitas}}</td>
+            <td>{{wahana_entry.jadwal}}</td>
+            <td>{{wahana_entry.peraturan}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    {% endif %}
+
+<br />
+
+{% if user_role == 'staf_admin' %}
+<a href="{% url 'hiburan:create_wahana' %}">
+  <button>Tambah Wahana</button>
+</a>
+{% endif %}
+</body>
+</html>
+{% endblock content %}
