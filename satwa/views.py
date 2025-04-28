@@ -71,3 +71,35 @@ def daftar_satwa_view(request):
     }
 
     return render(request, 'daftar_satwa/index.html', context)
+
+def edit_satwa_view(request):
+    satwa = {
+        'nama': 'Khan',
+        'spesies': 'Harimau',
+        'asal_hewan': 'Sumatera',
+        'tanggal_lahir': '2015-06-15',
+        'status_kesehatan': 'Sehat',
+        'habitat': 'Hutan',
+        'foto': 'https://media.4-paws.org/6/1/9/0/61905f50890c481987d29191ff0c2aa89d41e822/VIER%20PFOTEN_2022-05-18_00011-2890x2000.jpg',
+    }
+    status_kesehatan = [
+        'Sehat',
+        'Sakit',
+        'Dalam Pemantauan',
+        'Luka',
+        'Mati'
+    ]
+    daftar_habitat = [
+        'Hutan',
+        'Sungai',
+        'Laut',
+        'Padang Rumput'
+    ]
+    
+    context = {
+        'status_kesehatan': status_kesehatan,
+        'daftar_habitat': daftar_habitat,
+        'satwa': satwa,
+    }
+    
+    return render(request, 'edit_satwa/index.html', context)
