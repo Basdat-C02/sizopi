@@ -62,3 +62,15 @@ def add_habitat_view(request):
         # Handle form submission to add a new habitat
         pass  # Implement your logic here
     return render(request, 'add_habitat/index.html')
+
+def edit_habitat_view(request):
+    data = {
+        "nama": "Savanna",
+        "luas_area": 912.13,
+        "kapasitas": 100,
+        "status": "Padang rumput luas dengan pohon tersebar, iklim tropis dengan musim hujan dan kemarau yang kering."
+    }
+    context = {
+        'habitat': data,
+    }
+    return render(request, 'edit_habitat/index.html', context)
