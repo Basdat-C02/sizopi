@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block meta %}
+<title>Tambah Data Satwa</title>
+{% endblock meta %}
+
+{% block content %}
+<div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="border shadow-sm p-4 rounded-3 bg-white" style="width: 600px;">
+        <h1 class="text-center mb-4">Form Tambah Data Satwa</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label>Nama Individu (Opsional) </label>
+                <input type="text" name="nama" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>Spesies</label>
+                <input type="text" name="spesies" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Asal Hewan</label>
+                <input type="text" name="origin" class="form-control" required>
+            </div>
+            <div class="mb-4">
+                <label>Tanggal Lahir (opsional) </label>
+                <input type="date" name="tanggal_lahir" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>Nama Tengah (Opsional)</label>
+                <input type="text" name="nama_tengah" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>Status Kesehatan</label>
+                <select name="status_kesehatan" class="form-select" required>
+                    <option value="">-- Status Kesehatan --</option>
+                    {% for status in status_kesehatan %}
+                        <option value="{{ status }}">{{ status }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Nama Habitat</label>
+                <select name="Habitat" class="form-select" required>
+                    <option value="">-- Habitat --</option>
+                    {% for habitat in daftar_habitat %}
+                        <option value="{{ habitat }}">{{ habitat }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>URL Foto Satwa</label>
+                <input type="text" name="url_foto" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Daftar</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}
