@@ -5,36 +5,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Wahana</title>
+    <title>Tambah Atraksi</title>
 </head>
 <body>
-    <!-- Form Edit Atraksi -->
-    <div class="form-container">
-        <h2>FORM EDIT ATRAKSI</h2>
-        <form>
-            <label>Nama Atraksi:</label>
-            <input type="text" name="nama_atraksi" value="Pertunjukan lumba-lumba" readonly>
-
-            <label>Lokasi:</label>
-            <input type="text" name="lokasi" value="Area Akuatik" readonly>
-
-            <label>Kapasitas Maksimum:</label>
-            <input type="number" name="kapasitas_maksimum">
-
-            <label>Pelatih Pertunjukan:</label>
-            <input type="text" name="pelatih_pertunjukan" value="Budi" readonly>
-
-            <label>Jadwal:</label>
-            <input type="time" name="jadwal">
-
-            <label>Hewan yang Terlibat:</label>
-            <input type="text" name="hewan_terlibat" value="Lumba-lumba" readonly>
-
-            <div class="buttons">
-                <a href="{% url 'hiburan:data_atraksi' %}">[SIMPAN PERUBAHAN]</a>
-                <a href="{% url 'hiburan:data_atraksi' %}">[BATAL]</a>
-            </div>
-        </form>
+    <div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
+        <div class="border shadow-sm p-4 rounded-3 bg-white" style="width: 500px;">
+            <h1 class="text-center mb-4">Tambah Atraksi</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label>Nama Atraksi</label>
+                    <input type="text" name="nama_atraksi" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Lokasi</label>
+                    <input type="text" name="lokasi" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Kapasitas Maksimum</label>
+                    <input type="text" name="kapasitas_maksimum" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="pelatih">Pelatih Pertunjukan:</label>
+                    <select id="pelatih" name="pelatih[]" multiple>
+                    {% for pelatih in pelatih_list %}
+                        <option value="{{ pelatih }}">{{ pelatih }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Jadwal</label>
+                    <input type="time" name="jadwal" class="form-control">
+                </div>
+                <div class="buttons">
+                    <a href="{% url 'hiburan:data_atraksi' %}">[SIMPAN]</a>
+                    <a href="{% url 'hiburan:data_atraksi' %}">[BATAL]</a>
+                </div>     
+            </form>
+        </div>
     </div>
 </body>
 </html>
