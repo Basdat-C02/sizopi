@@ -191,7 +191,8 @@ def pemberian_pakan(request, pk):
     ]
 
     context = {
-        'jadwal_list': jadwal_list
+        'jadwal_list': jadwal_list,
+        'id_hewan': pk,
     }
 
     return render(request, 'pemberian_pakan.html', context)
@@ -210,3 +211,57 @@ def delete_pemberian_pakan(request, pk):
     if request.POST:
         # Delete logic
         return redirect("kesehatan:pemberian_pakan", pk=pk)
+    
+def beri_pakan(request, pk):
+    if request.POST:
+        # Beri pakan logic
+        return redirect("kesehatan:pemberian_pakan", pk=pk)
+    
+def riwayat_pemberian_pakan(request):
+    pemberian = [
+        {
+            'jenis_pakan': 'Daging',
+            'pakan': {
+                'hewan': {
+                    'id': '6883e846-f894-40be-9282-30c29169e852',
+                    'nama': 'Leo',
+                    'spesies': 'Singa',
+                    'tanggal_lahir': '2020-01-01',
+                    'status_kesehatan': 'Sehat',
+                    'nama_habitat': 'Savanna',
+                    'url_foto': 'https://media.istockphoto.com/id/1286270203/photo/african-lion-sitting.jpg?s=612x612&w=0&k=20&c=8ULxT0Wm-Hys4DtZO1UQq0E6dFbpaOpjJ3TaOOGOKyU='
+                },
+                'jadwal': '2025-04-01 08:00:00',
+                'jenis': 'Daging',
+                'jumlah': 500,
+                'status': 'Selesai Diberikan'
+            },
+            'username_jh': 'adi.susanto',
+        },
+        {
+            'jenis_pakan': 'Biji-bijian',
+            'pakan': {
+                'hewan': {
+                    'id': '64a42f19-f82e-4a72-ba6f-3d3ff0c5a3c0',
+                    'nama': 'Koko',
+                    'spesies': 'Kakatua jambul kuning',
+                    'tanggal_lahir': '2020-02-20',
+                    'status_kesehatan': 'Sehat',
+                    'nama_habitat': 'Rainforest',
+                    'url_foto': 'https://media.istockphoto.com/id/1471333561/photo/white-cockatoo-or-kakatua-putih.jpg?s=612x612&w=0&k=20&c=foE2zDycJnhcIS9rR6-lV32nOXrydmPns0ErzUCF5dk='
+                },
+                'jadwal': '2025-04-01 09:00:00',
+                'jenis': 'Biji-bijian',
+                'jumlah': 50,
+                'status': 'Menunggu Pemberian'
+            },
+            'username_jh': 'adi.susanto',
+        }
+    ]
+
+    context = {
+        'pemberian': pemberian,
+    }
+
+    return render(request, 'riwayat_pemberian_pakan.html', context)
+
