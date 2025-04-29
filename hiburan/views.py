@@ -4,15 +4,75 @@ from django.shortcuts import render
 # -- page atraksi --
 def data_atraksi_view(request):
     atraksi = [
-        {
-            'nama': '',
-            'lokasi': '',
-            'kapasitas': '',
-            'jadwal': '',
-            'hewan_terlibat': '',
-            'pelatih': ''
-        }
+    {
+        'nama': 'Atraksi Lumba-lumba',
+        'lokasi': 'Zona Laut',
+        'kapasitas': 70,
+        'jadwal': '2025-05-06 10:00:00',
+        'hewan_terlibat': ['Leo', 'Nala'],
+        'pelatih': ''
+    },
+    {
+        'nama': 'Pertunjukan Harimau',
+        'lokasi': 'Blok A',
+        'kapasitas': 80,
+        'jadwal': '2025-05-07 16:00:00',
+        'hewan_terlibat': ['Koko', 'Polly'],
+        'pelatih': ''
+    },
+    {
+        'nama': 'Kebun Binatang Mini',
+        'lokasi': 'Taman Fauna',
+        'kapasitas': 40,
+        'jadwal': '2025-05-08 09:30:00',
+        'hewan_terlibat': ['Rocky', 'Charlie'],
+        'pelatih': ''
+    },
+    {
+        'nama': 'Atraksi Gajah',
+        'lokasi': 'Zona Gajah',
+        'kapasitas': 25,
+        'jadwal': '2025-05-09 11:00:00',
+        'hewan_terlibat': ['Luna', 'Oscar'],
+        'pelatih': ''
+    },
+    {
+        'nama': 'Pertunjukan Kuda',
+        'lokasi': 'Lapangan Kuda',
+        'kapasitas': 90,
+        'jadwal': '2025-05-10 14:30:00',
+        'hewan_terlibat': ['Cleo'],
+        'pelatih': ''
+    },
+    {
+        'nama': 'Sirkus Singa',
+        'lokasi': 'Panggung Sirkus',
+        'kapasitas': 50,
+        'jadwal': '2025-05-11 15:00:00',
+        'hewan_terlibat': ['Max'],
+        'pelatih': ''
+    },
+    {
+        'nama': 'Atraksi Ular',
+        'lokasi': 'Zona Ular',
+        'kapasitas': 35,
+        'jadwal': '2025-05-12 12:00:00',
+        'hewan_terlibat': [],
+        'pelatih': ''
+    },
+    {
+        'nama': 'Kandang Kuda',
+        'lokasi': 'Blok Kuda',
+        'kapasitas': 45,
+        'jadwal': '2025-05-13 10:30:00',
+        'hewan_terlibat': [],
+        'pelatih': ''
+    }
     ]
+    context = {
+    'atraksi_entries': atraksi,
+    }
+
     return render(request, 'atraksi/data.html')
 
 def create_atraksi_view(request):

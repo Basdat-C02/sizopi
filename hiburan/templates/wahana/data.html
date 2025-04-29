@@ -18,7 +18,9 @@
             <th>Kapasitas</th>
             <th>Jadwal</th>
             <th>Peraturan</th>
+            {% if user_role == 'staf_admin' %}
             <th>Aksi</th>
+            {% endif %}
         </tr>
 
     {% for wahana_entry in wahana_entries %}
@@ -27,6 +29,9 @@
             <td>{{wahana_entry.kapasitas}}</td>
             <td>{{wahana_entry.jadwal}}</td>
             <td>{{wahana_entry.peraturan}}</td>
+            {% if user_role == 'staf_admin' %}
+
+            {% endif %}
         </tr>
     {% endfor %}
     </table>
@@ -39,6 +44,29 @@
   <button>Tambah Wahana</button>
 </a>
 {% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="hapusModal" tabindex="-1" aria-labelledby="hapusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="hapusModalLabel">Hapus Wahana</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body">
+          Apakah Anda yakin ingin menghapus wahana <strong id="nama-wahana"></strong>?
+        </div>
+        <div class="modal-footer">
+          <form id="formHapus" method="POST" action="">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">YA</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">TIDAK</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 </body>
 </html>
 {% endblock content %}

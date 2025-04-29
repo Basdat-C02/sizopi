@@ -9,18 +9,20 @@
 </head>
 <body>
     <h1>Data Reservasi</h1>
-    {% if not product_entries %}
-    <p>No products yet.</p>
+    {% if not reservasi_entries %}
+    <p>Belum ada yang membuat reservasi.</p>
     {% else %}
     <table>
         <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Favorite</th>
+            <th>Username</th>
+            <th>Nama Atraksi</th>
+            <th>Tanggal reservasi</th>
+            <th>Jumlah tiket</th>
+            <th>Status</th>
+            <th>Aksi</th>
         </tr>
 
-    {% for product_entry in product_entries %}
+    {% for product_entry in reservasi_entries %}
         <tr>
             <td>{{product_entry.name}}</td>
             <td>{{product_entry.price}}</td>
