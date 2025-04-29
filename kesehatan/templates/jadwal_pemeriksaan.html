@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- Header Section -->
+    <div class="text-center mb-4 mx-auto">
+        <h1 class="display-5 mb-3 mx-auto">Jadwal Pemeriksaan Kesehatan</h1>
+        <div class="mx-auto" style="width: 80px; height: 2px; background-color: #dee2e6;"></div>
+    </div>
+
+    <!-- Add Schedule Button -->
+    <div class="mb-4">
+        <button class="btn btn-primary d-flex align-items-center" 
+                data-bs-toggle="modal" data-bs-target="#createScheduleModal">
+            <i class="fas fa-plus me-2"></i>
+            Tambah Jadwal Pemeriksaan
+        </button>
+    </div>
+
+    <!-- Schedule Table -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0 text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="py-3">Tanggal Pemeriksaan Selanjutnya</th>
+                                    <th class="py-3">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for jadwal in jadwal_list %}
+                                <tr>
+                                    <td class="py-3">{{ jadwal.tgl_pemeriksaan_selanjutnya }}</td>
+                                    <td class="py-3">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <button class="btn btn-sm btn-outline-primary" 
+                                                    data-bs-toggle="modal" data-bs-target="#editScheduleModal" 
+                                                    onclick="populateScheduleEdit('{{ jadwal.id }}', '{{ jadwal.jenis_pemeriksaan }}', '{{ jadwal.catatan }}')">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger" 
+                                                    data-bs-toggle="modal" data-bs-target="#deleteScheduleModal" 
+                                                    onclick="setScheduleDeleteUrl('{{ jadwal.id }}')">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6" class="py-4 text-muted">
+                                        Tidak ada jadwal pemeriksaan.
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Schedule Modal -->
+<div class="modal fade" id="createScheduleModal" tabindex="-1" aria-labelledby="createScheduleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createScheduleModalLabel">Form Jadwal Pemeriksaan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'kesehatan:create_jadwal_pemeriksaan' id_hewan %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="tanggal" class="form-label">Tanggal:</label>
+                        <input type="date" name="tanggal" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="jam" class="form-label">Jam:</label>
+                        <input type="time" name="jam" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="jenis_pemeriksaan" class="form-label">Jenis Pemeriksaan:</label>
+                        <input type="text" name="jenis_pemeriksaan" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="catatan" class="form-label">Catatan:</label>
+                        <textarea name="catatan" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Schedule Modal -->
+<div class="modal fade" id="editScheduleModal" tabindex="-1" aria-labelledby="editScheduleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editScheduleModalLabel">Edit Jadwal Pemeriksaan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" id="editScheduleForm">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="jenis_pemeriksaan_edit" class="form-label">Jenis Pemeriksaan:</label>
+                        <input type="text" name="jenis_pemeriksaan" id="jenis_pemeriksaan_edit" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="catatan_edit" class="form-label">Catatan:</label>
+                        <textarea name="catatan" id="catatan_edit" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Schedule Modal -->
+<div class="modal fade" id="deleteScheduleModal" tabindex="-1" aria-labelledby="deleteScheduleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteScheduleModalLabel">Hapus Jadwal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus jadwal pemeriksaan ini?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                <form method="POST" id="deleteScheduleForm" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Ya</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setScheduleDeleteUrl(jadwalId) {
+        const deleteUrl = "{% url 'kesehatan:delete_jadwal_pemeriksaan' id_hewan %}";
+        document.getElementById('deleteScheduleForm').action = deleteUrl;
+    }
+
+    function populateScheduleEdit(jadwalId, jenis, catatan) {
+        document.getElementById('jenis_pemeriksaan_edit').value = jenis;
+        document.getElementById('catatan_edit').value = catatan || '';
+        const editUrl = "{% url 'kesehatan:edit_jadwal_pemeriksaan' id_hewan %}";
+        document.getElementById('editScheduleForm').action = editUrl;
+    }
+</script>
+{% endblock %}

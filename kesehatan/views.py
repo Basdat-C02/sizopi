@@ -40,7 +40,7 @@ def rekam_medis_hewan(request, pk):
             'tanggal_pemeriksaan': '2025-04-01',
             'diagnosis': 'Infeksi kulit',
             'pengobatan': 'Salep antibiotik',
-            'status_kesehatan': 'Sedang',
+            'status_kesehatan': 'Sehat',
             'catatan_tindak_lanjut': ''
         },
         {
@@ -49,7 +49,7 @@ def rekam_medis_hewan(request, pk):
             'tanggal_pemeriksaan': '2025-04-02',
             'diagnosis': 'Cacingan',
             'pengobatan': 'Obat cacing',
-            'status_kesehatan': 'Baik',
+            'status_kesehatan': 'Sakit',
             'catatan_tindak_lanjut': ''
         },
         {
@@ -58,13 +58,12 @@ def rekam_medis_hewan(request, pk):
             'tanggal_pemeriksaan': '2025-04-05',
             'diagnosis': 'Patah tulang',
             'pengobatan': 'Operasi dan gips',
-            'status_kesehatan': 'Kritis',
+            'status_kesehatan': 'Sehat',
             'catatan_tindak_lanjut': ''
         },
     ]
 
     catatan_medis_hewan = [catatan for catatan in catatan_medis_list if catatan['id_hewan'] == str(pk)]
-
 
     context = {
         'catatan_medis': catatan_medis_hewan,
@@ -120,3 +119,41 @@ def delete_rekam_medis(request, pk):
 
 
 # ================ PENJADWALAN PEMERIKSAAN KESEHATAN ================
+def jadwal_pemeriksaan(request, pk):  
+    jadwal_list = [
+        {
+            'id_hewan': '6883e846-f894-40be-9282-30c29169e852',
+            'freq_pemeriksaan_rutin': 30,
+            'tgl_pemeriksaan_selanjutnya': '2025-06-01',
+        },
+        {
+            'id_hewan': '2',
+            'freq_pemeriksaan_rutin': 60,
+            'tgl_pemeriksaan_selanjutnya': '2025-06-02',
+        },
+    ]
+
+    jadwal_list_hewan = [jadwal for jadwal in jadwal_list if jadwal['id_hewan'] == str(pk)]
+    
+    context = {
+        'jadwal_list': jadwal_list_hewan,
+        'id_hewan': pk,
+    }
+
+    return render(request, 'jadwal_pemeriksaan.html', context)
+
+def create_jadwal_pemeriksaan(request, pk):
+    if request.POST:
+        # Create logic
+        return redirect('kesehatan:create_jadwal_pemeriksaan', pk=pk)
+    
+def edit_jadwal_pemeriksaan(request, pk):
+    if request.POST:
+        # Edit logic
+        return redirect('kesehatan:edit_jadwal_pemeriksaan', pk=pk)
+    
+def delete_jadwal_pemeriksaan(request, pk):
+    if request.POST:
+        # Delete logic
+        return redirect('kesehatan:delete_jadwal_pemeriksaan', pk=pk)
+
