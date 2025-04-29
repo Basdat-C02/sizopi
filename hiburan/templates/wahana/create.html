@@ -18,43 +18,35 @@
                     <input type="text" name="nama_wahana" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label>Lokasi</label>
-                    <input type="text" name="lokasi" class="form-control" required>
-                </div>
-                <div class="mb-3">
                     <label>Kapasitas Maksimum</label>
                     <input type="text" name="kapasitas_maksimum" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label>Pelatih Pertunjukan</label>
-                    <input type="" name="pelatih_pertunjukan" class="form-control" required>
-                </div>
-                <div>
-                    <label htmlFor="matkul" className="block text-sm font-medium text-black mb-1">Matkul</label>
-                    <select
-                      id="matkul"
-                      value={matkul}
-                    >
-                      <option value="">Pilih pelatih</option>
-                      <option value="Budi">Budi</option>
-                      <option value="Kurniawan">Kurniawan</option>
-                      <option value="Maisaroh">Maisaroh</option>
-                      <option value="Syauqi">Syauqi</option>
-                      <option value="Azka">Azka</option>
-                      <option value="Manny">Manny</option>
-                      <option value="Syifa">Syifa</option>
-                      <option value="Munaroh">Munaroh</option>
-                    </select>
-                  </div>
-        
-                <div class="mb-3">
                     <label>Jadwal</label>
                     <input type="time" name="jadwal" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label>Peraturan</label>
+                    <input type="text" name="peraturan" class="form-control" required>
                 </div>
                 <button type="submit" class="btn btn-success w-100">Tambah</button>
             </form>
         </div>
     </div>
+    <script>
+        let peraturanCount = 1;
+    
+        function tambahPeraturan() {
+          peraturanCount++;
+          const div = document.getElementById("peraturan-list");
+          const input = document.createElement("input");
+          input.type = "text";
+          input.name = "peraturan[]";
+          input.className = "peraturan-input";
+          input.placeholder = "Peraturan " + peraturanCount;
+          div.appendChild(input);
+        }
+      </script>
 </body>
 </html>
 {% endblock content %}
