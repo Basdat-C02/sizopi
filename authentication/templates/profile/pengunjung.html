@@ -67,16 +67,17 @@
                     <div class="table-responsive">
                         <table class="table table-hover table-striped">
                             <thead class="table-success">
-                                <tr>
+                                <tr class="text-center">
                                     <th>Tanggal</th>
                                     <th>Atraksi</th>
                                     <th>Lokasi</th>
                                     <th>Status</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for kunjungan in data_pengunjung.riwayat_kunjungan %}
-                                <tr>
+                                <tr class="text-center">
                                     <td>{{ kunjungan.tanggal_kunjungan }}</td>
                                     <td>{{ kunjungan.nama_atraksi }}</td>
                                     <td>{{ kunjungan.lokasi }}</td>
@@ -84,6 +85,12 @@
                                         <span class="badge {% if kunjungan.status_reservasi == 'Selesai' %}bg-success{% elif kunjungan.status_reservasi == 'Dibatalkan' %}bg-danger{% else %}bg-warning{% endif %}">
                                             {{ kunjungan.status_reservasi }}
                                         </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex justify-content-center align-items-center gap-2">
+                                            <a href="#" class="btn btn-success btn-sm mb-1">Lihat Detail</a><br>
+                                            <a href="#" class="btn btn-danger btn-sm">Batal</a>
+                                        </div>
                                     </td>
                                 </tr>
                                 {% empty %}
