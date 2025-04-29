@@ -21,6 +21,8 @@ def add_satwa_view(request):
     context = {
         'status_kesehatan': status_kesehatan,
         'daftar_habitat': daftar_habitat,
+        'user_role': 'penjaga_hewan',
+        'is_authenticated': True,
     }
 
     return render(request, 'add_satwa/index.html', context)
@@ -68,6 +70,8 @@ def daftar_satwa_view(request):
 
     context = {
         'daftar_satwa': daftar_satwa,
+        'user_role': 'penjaga_hewan',
+        'is_authenticated': True,
     }
 
     return render(request, 'daftar_satwa/index.html', context)
@@ -100,6 +104,8 @@ def edit_satwa_view(request):
         'status_kesehatan': status_kesehatan,
         'daftar_habitat': daftar_habitat,
         'satwa': satwa,
+        'user_role': 'penjaga_hewan',
+        'is_authenticated': True,
     }
     
     return render(request, 'edit_satwa/index.html', context)

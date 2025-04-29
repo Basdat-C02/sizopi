@@ -54,6 +54,8 @@ def daftar_habitat_view(request):
     ]
     context = {
         'daftar_habitat': habitat,
+        'user_role': 'penjaga_hewan',
+        'is_authenticated': True,
     }
     return render(request, 'daftar_habitat/index.html', context)
 
@@ -61,7 +63,11 @@ def add_habitat_view(request):
     if request.method == 'POST':
         # Handle form submission to add a new habitat
         pass  # Implement your logic here
-    return render(request, 'add_habitat/index.html')
+    context = {
+        'user_role': 'penjaga_hewan',
+        'is_authenticated': True,
+    }
+    return render(request, 'add_habitat/index.html', context)
 
 def edit_habitat_view(request):
     data = {
@@ -72,6 +78,8 @@ def edit_habitat_view(request):
     }
     context = {
         'habitat': data,
+        'user_role': 'penjaga_hewan',
+        'is_authenticated': True,
     }
     return render(request, 'edit_habitat/index.html', context)
 
@@ -138,5 +146,7 @@ def detail_habitat_view(request):
     context = {
         'habitat': habitat,
         'daftar_hewan' : daftar_hewan,
+        'user_role': 'penjaga_hewan',
+        'is_authenticated': True,
     }
     return render(request, 'detail_habitat/index.html', context)

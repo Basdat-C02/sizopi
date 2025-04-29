@@ -10,6 +10,12 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
       <ul class="navbar-nav mb-2 mb-lg-0">
 
+        {% if is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Dashboard</a>
+        </li>
+        {% endif %}
+
         {% if user_role == 'dokter_hewan' %}
         <li class="nav-item">
           <a class="nav-link text-white" href="#">Rekam Medis Hewan</a>
@@ -51,11 +57,14 @@
           <a class="nav-link text-white" href="#">Hewan Adopsi</a>
         </li>
         {% endif %}
-        
-        {% if user.is_authenticated %}
+
+        {% if is_authenticated %}
         <li class="nav-item">
-          <span class="nav-link disabled text-white">Welcome, {{ user.username }}</span>
+          <a class="nav-link text-white" href="#">Pengaturan Profil</a>
         </li>
+        {% endif %}
+        
+        {% if is_authenticated %}
         <li class="nav-item">
           <a class="btn btn-danger me-2" href="#">Logout</a>
         </li>

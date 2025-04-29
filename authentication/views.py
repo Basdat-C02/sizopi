@@ -2,31 +2,31 @@ from django.shortcuts import render
 
 # Create your views here.
 def home_view(request):
-    return render(request, 'main/index.html')
+    return render(request, 'main/index.html', {'is_authenticated': False})
 
 def login_view(request):
-    return render(request, 'login/index.html')
+    return render(request, 'login/index.html', {'is_authenticated': False})
 
 def choose_role_view(request):
-    return render(request, 'choose_role/index.html')
+    return render(request, 'choose_role/index.html', {'is_authenticated': False})
 
 def register_pengunjung_view(request):
     if request.method == 'POST':
         # Validasi dan logika buat akun
         pass
-    return render(request, 'register_pengunjung/index.html')
+    return render(request, 'register_pengunjung/index.html', {'is_authenticated': False})
 
 def register_dokter_hewan_view(request):
     if request.method == 'POST':
         # Validasi dan logika buat akun
         pass
-    return render(request, 'register_dokter/index.html')
+    return render(request, 'register_dokter/index.html', {'is_authenticated': False})
 
 def register_staff_view(request):
     if request.method == 'POST':
         # Validasi dan logika buat akun
         pass
-    return render(request, 'register_staff/index.html')
+    return render(request, 'register_staff/index.html', {'is_authenticated': False})
 
 def profile_pengunjung_view(request):
     pengunjung_data = {
@@ -74,6 +74,8 @@ def profile_pengunjung_view(request):
     }
     context = {
         'data_pengunjung': pengunjung_data,
+        'user_role': 'pengunjung',
+        'is_authenticated': True,
     }
     return render(request, 'profile/pengunjung.html', context)
 
@@ -88,7 +90,12 @@ def profile_dokter_hewan_view(request):
         'spesialisasi': ['Bedah Hewan', 'Mamalia Besar'],
         'jumlah_hewan_ditangani': 45
     }
-    return render(request, 'profile/dokter_hewan.html', {'data_profile': data_profile})
+    context = {
+        'data_profile': data_profile, 
+        'user_role': 'dokter_hewan',
+        'is_authenticated': True,
+    }
+    return render(request, 'profile/dokter_hewan.html', context)
 
 def profile_penjaga_hewan_view(request):
     data_profile = {
@@ -100,7 +107,12 @@ def profile_penjaga_hewan_view(request):
         'id_staf': '3265abbf-8b32-4f94-b4f1-b3bb5567bff0',
         'jumlah_hewan_diberi_pakan': 120
     }
-    return render(request, 'profile/penjaga_hewan.html', {'data_profile': data_profile})
+    context = {
+        'data_profile': data_profile, 
+        'user_role': 'penjaga_hewan',
+        'is_authenticated': True,
+    }
+    return render(request, 'profile/penjaga_hewan.html', context)
 
 def profile_staf_admin_view(request):
     data_profile = {
@@ -114,7 +126,12 @@ def profile_staf_admin_view(request):
         'jumlah_pengunjung_hari_ini': 320,
         'laporan_pendapatan_mingguan': 9500000
     }
-    return render(request, 'profile/staf_admin.html', {'data_profile': data_profile})
+    context = {
+        'data_profile': data_profile, 
+        'user_role': 'staf_admin',
+        'is_authenticated': True,
+    }
+    return render(request, 'profile/staf_admin.html', context)
 
 def profile_pelatih_hewan_view(request):
     data_profile = {
@@ -136,28 +153,49 @@ def profile_pelatih_hewan_view(request):
         ],
         'daftar_hewan_dilatih': ['Singa Leo', 'Burung Koko'],
     }
-    return render(request, 'profile/pelatih.html', {'data_profile': data_profile})
+    context = {
+        'data_profile': data_profile, 
+        'user_role': 'pelatih_hewan',
+        'is_authenticated': True,
+    }
+    return render(request, 'profile/pelatih.html', context)
 
 def edit_profile_pengunjung_view(request):
     if request.method == 'POST':
         # Proses penyimpanan data yang diedit
         pass
-    return render(request, 'edit_profile/pengunjung.html')
+    context = { 
+        'user_role': 'pengunjung',
+        'is_authenticated': True,
+    }
+    return render(request, 'edit_profile/pengunjung.html', context)
 
 def edit_profile_dokter_hewan_view(request):
     if request.method == 'POST':
         # Proses penyimpanan data yang diedit
         pass
-    return render(request, 'edit_profile/dokter_hewan.html')
+    context = { 
+        'user_role': 'dokter_hewan',
+        'is_authenticated': True,
+    }
+    return render(request, 'edit_profile/dokter_hewan.html', context)
 
 def edit_profile_staff_view(request):
     if request.method == 'POST':
         # Proses penyimpanan data yang diedit
         pass
-    return render(request, 'edit_profile/staff.html')
+    context = { 
+        'user_role': 'staf_admin',
+        'is_authenticated': True,
+    }
+    return render(request, 'edit_profile/staff.html', context)
 
 def ubah_password_view(request):
     if request.method == 'POST':
         # Proses penyimpanan data yang diedit
         pass
-    return render(request, 'edit_profile/ubah_password.html')
+    context = { 
+        'user_role': 'pengunjung',
+        'is_authenticated': True,
+    }
+    return render(request, 'edit_profile/ubah_password.html', context)
