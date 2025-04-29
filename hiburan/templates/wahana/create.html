@@ -29,7 +29,10 @@
                     <label>Peraturan</label>
                     <input type="text" name="peraturan" class="form-control" required>
                 </div>
-                <button type="submit" class="btn btn-success w-100">Tambah</button>
+                <div class="buttons">
+                    <a href="{% url 'hiburan:data_atraksi' %}">[SIMPAN]</a>
+                    <a href="{% url 'hiburan:data_atraksi' %}">[BATAL]</a>
+                </div>            
             </form>
         </div>
     </div>

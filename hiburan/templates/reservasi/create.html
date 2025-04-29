@@ -5,42 +5,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Wahana</title>
+    <title>Tambah Atraksi</title>
 </head>
 <body>
-    <!-- Form Tambah Atraksi -->
-    <div class="form-container">
-        <h2>FORM TAMBAH ATRAKSI</h2>
-        <form>
-            <label>Nama Atraksi:</label>
-            <input type="text" name="nama_atraksi">
+    <div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
+        <div class="border shadow-sm p-4 rounded-3 bg-white" style="width: 500px;">
+            <h1 class="text-center mb-4">Tambah Atraksi</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label htmlFor="atraksi">Nama Atraksi</label>
+                    <select
+                    id="atraksi"
+                    value={atraksi}
+                    >
+                    <option value="">Pilih atraksi</option>
+                    <option value="AtraksiLumbaLumba">Atraksi Lumba-lumba</option>
+                    <option value="KebunBinatangMini">Kebun Binatang Mini</option>
+                    <option value="AtraksiGajah">Atraksi Gajah</option>
+                    <option value="PertunjukanKuda">Pertunjukan Kuda</option>
+                    <option value="SirkusSinga">Sirkus Singa</option>
+                    <option value="AtraksiUlar">Atraksi Ular</option>
+                    <option value="KandangKuda">Kandang Kuda</option>
+                    </select>
+                </div>    
+                <div class="mb-3">
+                    <label for="lokasi">Lokasi:</label>
+                    <input type="text" id="lokasi" readonly>
+                </div>    
+                
+                <div class="mb-3">
+                    <label for="jam">Jam:</label>
+                    <input type="time" id="jam" readonly>
+                </div>    
+                
+                <div class="mb-3">
+                    <label for="tanggal">Tanggal:</label>
+                    <input type="date" id="tanggal">
+                </div>    
+                
+                <div class="mb-3">
+                    <label for="jumlah">Jumlah tiket yang ingin dibeli:</label>
+                    <input type="number" id="jumlah" min="1">
+                </div>    
 
-            <label>Lokasi:</label>
-            <input type="text" name="lokasi">
-
-            <label>Kapasitas Maksimum:</label>
-            <input type="number" name="kapasitas_maksimum">
-
-            <label>Pelatih Pertunjukan:</label>
-            <select name="pelatih_pertunjukan">
-                <option value="">-- Pilih Pelatih --</option>
-                <!-- Dropdown Pelatih akan diisi dinamis -->
-            </select>
-
-            <label>Jadwal:</label>
-            <input type="time" name="jadwal">
-
-            <label>Hewan yang Terlibat:</label>
-            <select name="hewan_terlibat" multiple>
-                <!-- Multiselect hewan -->
-            </select>
-
-            <div class="buttons">
-                <a href="{% url 'hiburan:data_atraksi' %}">[SIMPAN]</a>
-                <a href="{% url 'hiburan:data_atraksi' %}">[BATAL]</a>
-            </div>
-        </form>
+                <div class="buttons">
+                    <a href="{% url 'hiburan:data_reservasi' %}">[SIMPAN]</a>
+                    <a href="{% url 'hiburan:data_reservasi' %}">[BATAL]</a>
+                </div>     
+            </form>
+        </div>
     </div>
+    <script>
+        const atraksiData = {
+          "Atraksi Lumba-lumba": { lokasi: "Zona Laut", jam: "10:00" },
+          "Pertunjukan Harimau": { lokasi: "Blok A", jam: "11:00" },
+          "Kebun Binatang Mini": { lokasi: "Taman Fauna", jam: "09:30" },
+          "Atraksi Gajah": { lokasi: "Zona Gajah", jam: "13:00" },
+          "Pertunjukan Kuda": { lokasi: "Lapangan Kuda", jam: "14:00" },
+          "Sirkus Singa": { lokasi: "Panggung Sirkus", jam: "15:00" },
+          "Atraksi Ular": { lokasi: "Zona Ular", jam: "12:00" },
+          "Kandang Kuda": { lokasi: "Blok Kuda", jam: "16:00" }
+        };
+    
+        function updateDetail() {
+          const selected = document.getElementById("nama_atraksi").value;
+          const lokasiInput = document.getElementById("lokasi");
+          const jamInput = document.getElementById("jam");
+    
+          if (atraksiData[selected]) {
+            lokasiInput.value = atraksiData[selected].lokasi;
+            jamInput.value = atraksiData[selected].jam;
+          } else {
+            lokasiInput.value = "";
+            jamInput.value = "";
+          }
+        }
+      </script>
 </body>
 </html>
 {% endblock content %}
