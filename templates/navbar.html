@@ -1,0 +1,83 @@
+<nav style="background-color: #197f0f" class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="#">SIZOPI</a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+      <ul class="navbar-nav mb-2 mb-lg-0">
+
+        {% if is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Dashboard</a>
+        </li>
+        {% endif %}
+
+        {% if user_role == 'dokter_hewan' %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Rekam Medis Hewan</a>
+        </li>
+        {% endif %}
+
+        {% if user_role == 'penjaga_hewan' %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Catatan Perawatan Hewan</a>
+        </li>
+        {% endif %}
+
+        {% if user_role == 'staf_admin' %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Kelola Pengunjung</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Kelola Adopsi</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Kelola Adopter</a>
+        </li>
+        {% endif %}
+
+        {% if user_role == 'pelatih_pertunjukan' %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Jadwal Pertunjukan</a>
+        </li>
+        {% endif %}
+
+        {% if user_role == 'pengunjung' %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Informasi Kebun Binatang</a>
+        </li>
+        {% endif %}
+
+        {% if user_role == 'adopter' %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Hewan Adopsi</a>
+        </li>
+        {% endif %}
+
+        {% if is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Pengaturan Profil</a>
+        </li>
+        {% endif %}
+        
+        {% if is_authenticated %}
+        <li class="nav-item">
+          <a class="btn btn-danger me-2" href="#">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="btn btn-primary me-2" href="#">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-success me-2" href="#">Register</a>
+        </li>
+        {% endif %}
+
+      </ul>
+    </div>
+  </div>
+</nav>
