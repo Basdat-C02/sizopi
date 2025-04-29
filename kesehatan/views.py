@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-# Create your views here.
+# ================ REKAM MEDIS HEWAN ================
 def list_rekam_medis(request):
     hewan_list = [
         {
@@ -117,3 +117,6 @@ def delete_rekam_medis(request, pk):
     }
     
     return render(request, 'delete_rekam_medis.html', context)
+
+
+# ================ PENJADWALAN PEMERIKSAAN KESEHATAN ================

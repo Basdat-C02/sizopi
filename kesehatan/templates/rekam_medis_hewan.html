@@ -1,66 +1,88 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto p-8">
-    <h1 class="text-3xl font-semibold text-center mb-8">Rekam Medis Hewan</h1>
+<div class="container py-4">
+
+    <!-- Header Section -->
+    <div class="text-center mb-4 mx-auto">
+        <h1 class="display-5 mb-3 mx-auto">Rekam Medis Hewan</h1>
+        <div class="mx-auto" style="width: 80px; height: 2px; background-color: #dee2e6;"></div>
+    </div>
     
-    <div class="bg-white p-6 rounded-lg shadow-lg">
-        <div class="d-flex justify-content-between mb-6">
-            <div>
-                <button class="btn btn-primary btn-lg px-4 py-2 rounded shadow-sm" data-bs-toggle="modal" data-bs-target="#createModal">
-                    Tambah Rekam Medis
-                </button>
+    <!-- Add Record Button -->
+    <div class="mb-4">
+        <button class="btn btn-primary d-flex align-items-center" 
+                data-bs-toggle="modal" data-bs-target="#createModal">
+            <i class="fas fa-plus me-2"></i>
+            Tambah Rekam Medis
+        </button>
+    </div>
+
+    <!-- Medical Records Table -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0 text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="py-3">Tanggal</th>
+                                    <th class="py-3">Dokter</th>
+                                    <th class="py-3">Status</th>
+                                    <th class="py-3">Diagnosis</th>
+                                    <th class="py-3">Pengobatan</th>
+                                    <th class="py-3">Tindak Lanjut</th>
+                                    <th class="py-3">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in catatan_medis %}
+                                <tr>
+                                    <td class="py-3">{{ record.tanggal_pemeriksaan }}</td>
+                                    <td class="py-3">{{ record.username_dh }}</td>
+                                    <td class="py-3">
+                                        <span class="badge rounded-pill 
+                                            {% if record.status_kesehatan == 'Sehat' %}bg-success bg-opacity-10 text-success
+                                            {% else %}bg-warning bg-opacity-10 text-warning{% endif %}">
+                                            {{ record.status_kesehatan }}
+                                        </span>
+                                    </td>
+                                    <td class="py-3">{{ record.diagnosis|default:"-" }}</td>
+                                    <td class="py-3">{{ record.pengobatan|default:"-" }}</td>
+                                    <td class="py-3">{{ record.catatan_tindak_lanjut|default:"-" }}</td>
+                                    <td class="py-3">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <button class="btn btn-sm btn-outline-primary" 
+                                                    data-bs-toggle="modal" data-bs-target="#editModal" 
+                                                    onclick="populateEditForm('{{ id_hewan }}', '{{ record.diagnosis }}', '{{ record.pengobatan }}', '{{ record.catatan_tindak_lanjut }}')">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger" 
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                                    onclick="setDeleteUrl('{{ record.id_hewan }}')">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="py-4 text-muted">
+                                        Tidak ada data rekam medis
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <table class="table table-bordered">
-            <thead>
-                <tr class="bg-light">
-                    <th>Tanggal Pemeriksaan</th>
-                    <th>Nama Dokter</th>
-                    <th>Status Kesehatan</th>
-                    <th>Diagnosis</th>
-                    <th>Pengobatan</th>
-                    <th>Catatan Tindak Lanjut</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for record in catatan_medis %}
-                <tr>
-                    <td>{{ record.tanggal_pemeriksaan }}</td>
-                    <td>{{ record.username_dh }}</td>
-                    <td>{{ record.status_kesehatan }}</td>
-                    <td>{{ record.diagnosis }}</td>
-                    <td>{{ record.pengobatan }}</td>
-                    <td>
-                        {% if record.catatan_tindak_lanjut %}
-                            {{ record.catatan_tindak_lanjut }}
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                    <td>
-                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editModal" onclick="populateEditForm('{{ record.id_hewan }}', '{{ record.diagnosis }}', '{{ record.pengobatan }}', '{{ record.catatan_tindak_lanjut }}')">
-                            Edit
-                        </button>
-                        |
-                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteUrl('{{ record.id_hewan }}')">
-                            Hapus
-                        </button>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="7" class="text-center text-muted">No data available</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
 </div>
 
-<!-- Modal for Create Form -->
+<!-- Create Modal -->
 <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -75,7 +97,6 @@
                         <label for="tanggal_pemeriksaan" class="form-label">Tanggal Pemeriksaan:</label>
                         <input type="date" name="tanggal_pemeriksaan" class="form-control">
                     </div>
-
                     <div class="mb-3">
                         <label for="status_kesehatan" class="form-label">Status:</label>
                         <select name="status_kesehatan" class="form-select">
@@ -84,17 +105,14 @@
                             <option value="Sakit">Sakit</option>
                         </select>
                     </div>
-                    
                     <div class="mb-3">
                         <label for="diagnosis" class="form-label">Diagnosa:</label>
                         <input type="text" name="diagnosis" class="form-control">
                     </div>
-
                     <div class="mb-3">
                         <label for="pengobatan" class="form-label">Pengobatan:</label>
                         <input type="text" name="pengobatan" class="form-control">
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -105,7 +123,7 @@
     </div>
 </div>
 
-<!-- Modal for Edit Form -->
+<!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -120,12 +138,10 @@
                         <label for="diagnosis" class="form-label">Diagnosa Baru:</label>
                         <input type="text" name="diagnosis" id="edit_diagnosis" class="form-control">
                     </div>
-
                     <div class="mb-3">
                         <label for="pengobatan" class="form-label">Pengobatan Baru:</label>
                         <input type="text" name="pengobatan" id="edit_pengobatan" class="form-control">
                     </div>
-
                     <div class="mb-3">
                         <label for="catatan_tindak_lanjut" class="form-label">Catatan Tindak Lanjut:</label>
                         <input type="text" name="catatan_tindak_lanjut" id="edit_catatan_tindak_lanjut" class="form-control">
@@ -140,7 +156,7 @@
     </div>
 </div>
 
-<!-- Modal for Delete Confirmation -->
+<!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -167,6 +183,11 @@
         const deleteUrl = "{% url 'kesehatan:delete_rekam_medis' id_hewan %}".replace('id_hewan', id_hewan);
         document.getElementById('deleteForm').action = deleteUrl;
     }
+    
+    function populateEditForm(id_hewan, diagnosis, pengobatan, catatan) {
+        document.getElementById('edit_diagnosis').value = diagnosis;
+        document.getElementById('edit_pengobatan').value = pengobatan;
+        document.getElementById('edit_catatan_tindak_lanjut').value = catatan || '';
+    }
 </script>
-
 {% endblock %}
