@@ -22,6 +22,6 @@ urlpatterns = [
     path('reservasi', data_reservasi_view, name='data_reservasi'),
     path('reservasi/create', create_reservasi_view, name='create_reservasi'),
     path('reservasi/detail/<str:id>', detail_reservasi_view, name='detail_reservasi'),
-    path('reservasi/edit/<str:nama>', edit_reservasi_view, name='edit_reservasi'),
+    path('reservasi/edit/<str:id>', edit_reservasi_view, name='edit_reservasi'),
     path('reservasi/delete/<str:nama>', delete_reservasi_view, name='delete_reservasi'),
 ]
