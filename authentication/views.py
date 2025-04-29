@@ -137,3 +137,27 @@ def profile_pelatih_hewan_view(request):
         'daftar_hewan_dilatih': ['Singa Leo', 'Burung Koko'],
     }
     return render(request, 'profile/pelatih.html', {'data_profile': data_profile})
+
+def edit_profile_pengunjung_view(request):
+    if request.method == 'POST':
+        # Proses penyimpanan data yang diedit
+        pass
+    return render(request, 'edit_profile/pengunjung.html')
+
+def edit_profile_dokter_hewan_view(request):
+    if request.method == 'POST':
+        # Proses penyimpanan data yang diedit
+        pass
+    return render(request, 'edit_profile/dokter_hewan.html')
+
+def edit_profile_staff_view(request):
+    if request.method == 'POST':
+        # Proses penyimpanan data yang diedit
+        pass
+    return render(request, 'edit_profile/staff.html')
+
+def ubah_password_view(request):
+    if request.method == 'POST':
+        # Proses penyimpanan data yang diedit
+        pass
+    return render(request, 'edit_profile/ubah_password.html')

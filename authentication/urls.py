@@ -16,4 +16,9 @@ urlpatterns = [
     path('profile/profile-staff/', profile_staf_admin_view, name='profile_staff'),
     path('profile/profile-pelatih/', profile_pelatih_hewan_view, name='profile_pelatih_hewan'),
     path('profile/profile-penjaga/', profile_penjaga_hewan_view, name='profile_penjaga_hewan'),
+    
+    path('edit-profile/pengunjung/', edit_profile_pengunjung_view, name='edit_profile_pengunjung'),
+    path('edit-profile/dokter-hewan/', edit_profile_dokter_hewan_view, name='edit_profile_dokter_hewan'),
+    path('edit-profile/profile-staff/', edit_profile_staff_view, name='edit_profile_staff'),
+    path('edit-profile/ubah-password/', ubah_password_view, name='edit_password'),
 ]
