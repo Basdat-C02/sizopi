@@ -1,0 +1,106 @@
+<!-- Template 4: Ticket/Sales Staff Profile -->
+{% extends "base.html" %}
+
+{% block meta %}
+<title>Profil {{ data_profile.peran }}</title>
+{% endblock meta %}
+
+{% block content %}
+<div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center p-5">
+    <h2 class="text-center mb-4 display-4 fw-bold text-success">Profil {{ data_profile.peran }}</h2>
+    <div class="container">
+        <div class="card shadow-lg rounded-3 border-0" style="max-width: 1000px; margin: 0 auto;">
+            <div class="card-header bg-success bg-gradient text-white p-4 rounded-top-3">
+                <h2 class="text-center mb-0 fw-bold">{{ data_profile.nama_lengkap }}</h2>
+            </div>
+
+            <div class="card-body p-4">
+                <!-- Personal successrmation -->
+                <div class="mb-4 p-3 bg-light rounded-3 shadow-sm">
+                    <h4 class="border-bottom pb-2 mb-3 text-success">
+                        <i class="bi bi-person-circle me-2"></i>successrmasi Pribadi
+                    </h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <div class="fw-bold text-secondary" style="width: 150px;">Nama Lengkap:</div>
+                                <div class="flex-grow-1">{{ data_profile.nama_lengkap }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <div class="fw-bold text-secondary" style="width: 150px;">Username:</div>
+                                <div class="flex-grow-1">{{ data_profile.username }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <div class="fw-bold text-secondary" style="width: 150px;">Email:</div>
+                                <div class="flex-grow-1">{{ data_profile.email }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <div class="fw-bold text-secondary" style="width: 150px;">Nomor Telepon:</div>
+                                <div class="flex-grow-1">{{ data_profile.nomor_telepon }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Professional successrmation -->
+                <div class="mb-4 p-3 bg-light rounded-3 shadow-sm">
+                    <h4 class="border-bottom pb-2 mb-3 text-success">
+                        <i class="bi bi-briefcase-fill me-2"></i>Informasi Profesional
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex">
+                                <div class="fw-bold text-secondary" style="width: 150px;">ID Staf:</div>
+                                <div class="flex-grow-1">{{ data_profile.id_staf }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales successrmation -->
+                <div class="p-3 bg-light rounded-3 shadow-sm">
+                    <h4 class="border-bottom pb-2 mb-3 text-success">
+                        <i class="bi bi-graph-up me-2"></i>Informasi Penjualan
+                    </h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card h-100 border-success border-2 shadow-sm">
+                                <div class="card-body text-center p-4">
+                                    <h5 class="text-success mb-3">Penjualan Tiket Hari Ini</h5>
+                                    <div class="display-6 fw-bold">Rp {{ data_profile.ringkasan_penjualan_tiket }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100 border-success border-2 shadow-sm">
+                                <div class="card-body text-center p-4">
+                                    <h5 class="text-success mb-3">Jumlah Pengunjung Hari Ini</h5>
+                                    <div class="display-6 fw-bold">{{ data_profile.jumlah_pengunjung_hari_ini }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="card border-success border-2 bg-success bg-opacity-10 shadow-sm">
+                                <div class="card-body text-center p-4">
+                                    <h5 class="text-success mb-3">Pendapatan Mingguan</h5>
+                                    <div class="display-4 fw-bold">Rp {{ data_profile.laporan_pendapatan_mingguan }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light p-3 text-center">
+                <small class="text-muted">Terakhir diperbarui: {% now "j F Y" %}</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
