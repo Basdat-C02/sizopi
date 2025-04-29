@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import rekam_medis_hewan, list_rekam_medis, edit_rekam_medis, create_rekam_medis, delete_rekam_medis, jadwal_pemeriksaan, create_jadwal_pemeriksaan, edit_jadwal_pemeriksaan, delete_jadwal_pemeriksaan
+from .views import rekam_medis_hewan, list_rekam_medis, edit_rekam_medis, create_rekam_medis, delete_rekam_medis, jadwal_pemeriksaan, create_jadwal_pemeriksaan, edit_jadwal_pemeriksaan, delete_jadwal_pemeriksaan, edit_freq_pemeriksaan
 
 app_name='kesehatan'
 
@@ -14,4 +14,5 @@ urlpatterns = [
     path('create-jadwal-pemeriksaan/<uuid:pk>/', create_jadwal_pemeriksaan, name='create_jadwal_pemeriksaan'),
     path('edit-jadwal-pemeriksaan/<uuid:pk>/', edit_jadwal_pemeriksaan, name='edit_jadwal_pemeriksaan'),
     path('delete-jadwal-pemeriksaan/<uuid:pk>/', delete_jadwal_pemeriksaan, name='delete_jadwal_pemeriksaan'),
+    path('edit-freq-pemeriksaan/<uuid:pk>/', edit_freq_pemeriksaan, name='edit_freq_pemeriksaan'),
 ]

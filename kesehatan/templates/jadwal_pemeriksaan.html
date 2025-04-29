@@ -9,6 +9,19 @@
         <div class="mx-auto" style="width: 80px; height: 2px; background-color: #dee2e6;"></div>
     </div>
 
+    <!-- Frequency Info Section -->
+    <div class="alert alert-info d-flex align-items-center justify-content-between mb-4" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-info-circle me-2"></i>
+            <div>
+                Frekuensi Pemeriksaan Rutin: <strong>{{ jadwal_list.0.freq_pemeriksaan_rutin }}</strong> hari sekali
+            </div>
+        </div>
+        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editFrequencyModal">
+            Edit
+        </button>
+    </div>
+
     <!-- Add Schedule Button -->
     <div class="mb-4">
         <button class="btn btn-primary d-flex align-items-center" 
@@ -71,27 +84,15 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createScheduleModalLabel">Form Jadwal Pemeriksaan</h5>
+                <h5 class="modal-title" id="createScheduleModalLabel">Tambah Jadwal Pemeriksaan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" action="{% url 'kesehatan:create_jadwal_pemeriksaan' id_hewan %}">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="tanggal" class="form-label">Tanggal:</label>
+                        <label for="tanggal" class="form-label">Tanggal Pemeriksaan Selanjutnya:</label>
                         <input type="date" name="tanggal" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="jam" class="form-label">Jam:</label>
-                        <input type="time" name="jam" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="jenis_pemeriksaan" class="form-label">Jenis Pemeriksaan:</label>
-                        <input type="text" name="jenis_pemeriksaan" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="catatan" class="form-label">Catatan:</label>
-                        <textarea name="catatan" class="form-control"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -115,12 +116,8 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="jenis_pemeriksaan_edit" class="form-label">Jenis Pemeriksaan:</label>
-                        <input type="text" name="jenis_pemeriksaan" id="jenis_pemeriksaan_edit" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="catatan_edit" class="form-label">Catatan:</label>
-                        <textarea name="catatan" id="catatan_edit" class="form-control"></textarea>
+                        <label for="tanggal" class="form-label">Tanggal Pemeriksaan Selanjutnya:</label>
+                        <input type="date" name="tanggal" class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -153,6 +150,32 @@
         </div>
     </div>
 </div>
+
+<!-- Edit Frequency Modal -->
+<div class="modal fade" id="editFrequencyModal" tabindex="-1" aria-labelledby="editFrequencyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{% url 'kesehatan:edit_freq_pemeriksaan' id_hewan %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editFrequencyModalLabel">Edit Frekuensi Pemeriksaan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="freq_pemeriksaan_edit" class="form-label">Frekuensi Pemeriksaan Rutin (Hari):</label>
+                        <input type="number" name="freq_pemeriksaan_rutin" id="freq_pemeriksaan_edit" class="form-control" min="1" value="{{ jadwal_list.0.freq_pemeriksaan_rutin }}">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <script>
     function setScheduleDeleteUrl(jadwalId) {

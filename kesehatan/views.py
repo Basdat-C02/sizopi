@@ -145,15 +145,21 @@ def jadwal_pemeriksaan(request, pk):
 def create_jadwal_pemeriksaan(request, pk):
     if request.POST:
         # Create logic
-        return redirect('kesehatan:create_jadwal_pemeriksaan', pk=pk)
+        return redirect('kesehatan:jadwal_pemeriksaan', pk=pk)
     
 def edit_jadwal_pemeriksaan(request, pk):
     if request.POST:
         # Edit logic
-        return redirect('kesehatan:edit_jadwal_pemeriksaan', pk=pk)
+        return redirect('kesehatan:jadwal_pemeriksaan', pk=pk)
     
 def delete_jadwal_pemeriksaan(request, pk):
     if request.POST:
         # Delete logic
-        return redirect('kesehatan:delete_jadwal_pemeriksaan', pk=pk)
+        return redirect('kesehatan:jadwal_pemeriksaan', pk=pk)
 
+def edit_freq_pemeriksaan(request, pk):
+    if request.POST:
+        # Edit freq pemeriksaan logic
+
+        return redirect('kesehatan:jadwal_pemeriksaan', pk=pk)
+    
