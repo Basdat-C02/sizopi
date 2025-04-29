@@ -160,6 +160,53 @@ def delete_jadwal_pemeriksaan(request, pk):
 def edit_freq_pemeriksaan(request, pk):
     if request.POST:
         # Edit freq pemeriksaan logic
-
         return redirect('kesehatan:jadwal_pemeriksaan', pk=pk)
     
+
+# ================ PEMBERIAN PAKAN ================
+def pemberian_pakan(request, pk):
+    jadwal_list = [
+        {
+            'jenis_pakan': 'Daging',
+            'pakan': {
+                'id_hewan': '6883e846-f894-40be-9282-30c29169e852',
+                'jadwal': '2025-04-01 08:00:00',
+                'jenis': 'Daging',
+                'jumlah': 500,
+                'status': 'Selesai Diberikan'
+            },
+            'username_jh': 'adi.susanto',
+        },
+        {
+            'jenis_pakan': 'Ikan Segar',
+            'pakan': {
+                'id_hewan': '6883e846-f894-40be-9282-30c29169e852',
+                'jadwal': '2025-04-01 12:00:00',
+                'jenis': 'Ikan Segar',
+                'jumlah': 600,
+                'status': 'Menunggu Pemberian'
+            },
+            'username_jh': 'fitri.nuraini',
+        }
+    ]
+
+    context = {
+        'jadwal_list': jadwal_list
+    }
+
+    return render(request, 'pemberian_pakan.html', context)
+
+def create_pemberian_pakan(request, pk):
+    if request.POST:
+        # Create logic
+        return redirect("kesehatan:pemberian_pakan", pk=pk)
+
+def update_pemberian_pakan(request, pk):
+    if request.POST:
+        # Update logic
+        return redirect("kesehatan:pemberian_pakan", pk=pk)
+
+def delete_pemberian_pakan(request, pk):
+    if request.POST:
+        # Delete logic
+        return redirect("kesehatan:pemberian_pakan", pk=pk)
