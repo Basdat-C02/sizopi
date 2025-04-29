@@ -8,6 +8,13 @@
     <title>Data Atraksi</title>
 </head>
 <body>
+  <div>
+    <a href="{% url 'hiburan:fasilitas_menu' %}" class="game-title-link">
+      
+      <img style="width: 15px;" src="https://cdn-icons-png.flaticon.com/512/109/109618.png">
+      Back
+    </a>
+  </div>
     <h1>Data Atraksi</h1>
     {% if not atraksi_entries %}
     <p>Belum ada data atraksi.</p>
@@ -35,10 +42,10 @@
             <td>{{atraksi_entry.pelatih}}</td>
             {% if user_role == 'staf_admin' %}
             <td>
-                <a href="{% url 'hiburan:edit_atraksi' %}">
+                <a href="{% url 'hiburan:edit_atraksi' atraksi_entry.nama %}">
                   <button>Edit</button>
                 </a>
-                <a href="{% url 'hiburan:delete_atraksi' %}">
+                <a href="{% url 'hiburan:delete_atraksi' atraksi_entry.nama %}">
                   <button>Hapus</button>
                 </a>
 

@@ -5,17 +5,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Atraksi</title>
+    <title>Edit Atraksi</title>
 </head>
 <body>
     <div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
         <div class="border shadow-sm p-4 rounded-3 bg-white" style="width: 500px;">
-            <h1 class="text-center mb-4">Tambah Atraksi</h1>
+            <h1 class="text-center mb-4">Edit Atraksi</h1>
             <form method="post">
                 {% csrf_token %}
                 <div class="mb-3">
                     <label>Nama Atraksi</label>
-                    <input type="text" name="nama_atraksi" class="form-control" required>
+                    <input type="text" name="nama_atraksi" class="form-control" value="{{ nama }}" required>
                 </div>
                 <div class="mb-3">
                     <label>Lokasi</label>

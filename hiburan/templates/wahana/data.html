@@ -8,6 +8,11 @@
     <title>Data Wahana</title>
 </head>
 <body>
+  <div class="flex items-center space-x-2 my-2">
+    <a href="{% url 'hiburan:fasilitas_menu' %}" class="game-title-link">
+      <img style="width: 15px;" src="https://cdn-icons-png.flaticon.com/512/109/109618.png" class="w-4 h-4">
+      Back</a>
+  </div>
     <h1>Data Wahana</h1>
     {% if not wahana_entries %}
     <p>Belum ada data wahana.</p>
@@ -30,7 +35,15 @@
             <td>{{wahana_entry.jadwal}}</td>
             <td>{{wahana_entry.peraturan}}</td>
             {% if user_role == 'staf_admin' %}
+            <td>
+              <a href="{% url 'hiburan:edit_wahana' wahana_entry.nama %}">
+                <button>Edit</button>
+              </a>
+              <a href="{% url 'hiburan:delete_wahana' wahana_entry.nama %}">
+                <button>Hapus</button>
+              </a>
 
+          </td>
             {% endif %}
         </tr>
     {% endfor %}

@@ -8,17 +8,23 @@
     <title>Detail Reservasi</title>
 </head>
 <body>
+  <div>
+    <a href="{% url 'hiburan:data_reservasi' %}" class="game-title-link">
+      
+      <img style="width: 15px;" src="https://cdn-icons-png.flaticon.com/512/109/109618.png">
+      Back
+    </a>
+  </div>
     <div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
         <div class="border shadow-sm p-4 rounded-3 bg-white" style="width: 500px;">
             <h1 class="text-center mb-4">Detail Reservasi</h1>
             <form method="post">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label htmlFor="atraksi">Nama Atraksi: Atraksi Lumba-lumba</label>
+                    <label>Nama Atraksi: Pertunjukan lumba-lumba</label>
                 </div>    
                 <div class="mb-3">
-                    <label for="lokasi">Lokasi: Zona Laut</label>
-                    <input type="text" id="lokasi" readonly>
+                    <label for="lokasi">Lokasi: Area Akuatik</label>
                 </div>    
                 
                 <div class="mb-3">
@@ -33,9 +39,13 @@
                     <label for="jumlah">Jumlah tiket yang ingin dibeli: 10</label>
                 </div>    
 
+                <div class="mb-3">
+                    <label for="jumlah">Status: Terjadwal</label>
+                </div>    
+
                 <div class="buttons">
                     <a href="{% url 'hiburan:data_reservasi' %}">[SIMPAN]</a>
-                    <a href="{% url 'hiburan:data_reservasi' %}" data-bs-toggle="modal" data-bs-target="#batalModal" data-id="{{ reservasi.id }}"></a>>[BATALKAN RESERVASI]</a>
+                    <a href="{% url 'hiburan:data_reservasi' %}" data-bs-toggle="modal" data-bs-target="#batalModal" data-id="{{ reservasi.id }}">[BATALKAN RESERVASI]</a>
                 </div>     
             </form>
         </div>

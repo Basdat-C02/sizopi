@@ -8,8 +8,15 @@
     <title>Data Reservasi</title>
 </head>
 <body>
+    <div>
+        <a href="{% url 'hiburan:fasilitas_menu' %}" class="game-title-link">
+          
+          <img style="width: 15px;" src="https://cdn-icons-png.flaticon.com/512/109/109618.png">
+          Back
+        </a>
+      </div>
     <h1>Data Reservasi</h1>
-    {% if not reservasi_entries %}
+    {% if not reservasi %}
     <p>Belum ada yang membuat reservasi.</p>
     {% else %}
     <table>
@@ -22,12 +29,26 @@
             <th>Aksi</th>
         </tr>
 
-    {% for product_entry in reservasi_entries %}
+    {% for res in reservasi %}
         <tr>
-            <td>{{product_entry.name}}</td>
-            <td>{{product_entry.price}}</td>
-            <td>{{product_entry.description}}</td>
-            <td>{{product_entry.favorite}}</td>
+            <td>{{res.username}}</td>
+            <td>{{res.nama_atraksi}}</td>
+            <td>{{res.tanggal_reservasi}}</td>
+            <td>{{res.jumlah_tiket}}</td>
+            <td>{{res.status}}</td>
+            <td>
+                {% if user_role == 'staf_admin' %}
+              <a href="{% url 'hiburan:edit_reservasi' res.id %}">
+                <button>Edit</button>
+              </a>
+                  <a href="{% url 'hiburan:delete_reservasi' res.id %}" data-bs-toggle="modal" data-bs-target="#hapusModal" data-id="{{ atraksi.id }}">
+                <button>Batalkan</button>
+              </a>
+              {% endif %}
+              <a href="{% url 'hiburan:detail_reservasi' res.id %}">
+                <button>Detail</button>
+              </a>
+          </td>
         </tr>
     {% endfor %}
     </table>
@@ -38,6 +59,29 @@
 <a href="{% url 'hiburan:create_reservasi' %}">
   <button>Buat Reservasi</button>
 </a>
+
+<!-- Modal -->
+<div class="modal fade" id="hapusModal" tabindex="-1" aria-labelledby="hapusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="hapusModalLabel">Hapus Wahana</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body">
+          Apakah Anda yakin ingin menghapus wahana <strong id="nama-wahana"></strong>?
+        </div>
+        <div class="modal-footer">
+          <form id="formHapus" method="POST" action="">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">YA</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">TIDAK</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 </body>
 </html>
 {% endblock content %}

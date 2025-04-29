@@ -1,95 +1,74 @@
-<nav class="bg-indigo-600 shadow-lg fixed top-0 left-0 z-40 w-screen">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <div class="flex items-center">
-          <h1 class="text-2xl font-bold text-center text-white">SIZOPI</h1>
-        </div>
-        <div class="hidden md:flex items-center">
-          {% if user.is_authenticated %}
-          <span class="text-gray-300 mr-4">Welcome, {{ user.username }}</span>
-          <a href="{% url 'auth:logout' %}" class="text-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-              Logout
-            </a>
-            {% if user_role == 'dokter_hewan' %}
-            <a href="{% url 'main:logout' %}" class="text-center font-bold py-2 px-4 rounded transition duration-300">
-                Rekam Medis Hewan
-              </a>
-            
-            {% if user_role == 'penjaga_hewan' %}
-            <a href="#" class="text-center font-bold py-2 px-4 rounded transition duration-300">
-                Catatan Perawatan Hewan
-            </a>
-              
-            {% if user_role == 'staf_admin' %}
-            <a href="#" class="text-center font-bold py-2 px-4 rounded transition duration-300">
-                Kelola Pengunjung
-            </a>
-            
-            <a href="#" class="text-center font-bold py-2 px-4 rounded transition duration-300">
-                Kelola Adopsi
-            </a>
-
-            <a href="#" class="text-center font-bold py-2 px-4 rounded transition duration-300">
-                Kelola Adopter
-            </a>
-
-            {% if user_role == 'pelatih_pertunjukan' %}
-            <a href="#" class="text-center font-bold py-2 px-4 rounded transition duration-300">
-                Jadwal Pertunjukan
-            </a>
-
-            {% if user_role == 'pengunjung' %}
-            <a href="#" class="text-center font-bold py-2 px-4 rounded transition duration-300">
-                Informasi Kebun Binatang
-            </a>
-
-            {% if user_role == 'adopter' %}
-            <a href="#" class="text-center font-bold py-2 px-4 rounded transition duration-300">
-                Hewan Adopsi
-            </a>
-              
-            {% else %}
-            <a href="{% url 'main:login' %}" class="text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 mr-2">
-              Login
-            </a>
-            <a href="{% url 'main:register' %}" class="text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-              Register
-            </a>
-          {% endif %}
-        </div>
-        <div class="md:hidden flex items-center">
-          <button class="mobile-menu-button">
-            <svg class="w-6 h-6 text-white" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-              <path d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-    <!-- Mobile menu -->
-    <div class="mobile-menu hidden md:hidden  px-4 w-full md:max-w-full">
-      <div class="pt-2 pb-3 space-y-1 mx-auto">
-        {% if user.is_authenticated %}
-          <span class="block text-gray-300 px-3 py-2">Welcome, {{ user.username }}</span>
-          <a href="{% url 'main:logout' %}" class="block text-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-            Logout
-          </a>
-        {% else %}
-          <a href="{% url 'main:login' %}" class="block text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 mb-2">
-            Login
-          </a>
-          <a href="{% url 'main:register' %}" class="block text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-            Register
-          </a>
-        {% endif %}
-      </div>
-    </div>
-    <script>
-      const btn = document.querySelector("button.mobile-menu-button");
-      const menu = document.querySelector(".mobile-menu");
+<nav style="background-color: #197f0f" class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="#">SIZOPI</a>
     
-      btn.addEventListener("click", () => {
-        menu.classList.toggle("hidden");
-      });
-    </script>
-  </nav>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+      <ul class="navbar-nav mb-2 mb-lg-0">
+
+        {% if user_role == 'dokter_hewan' %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Rekam Medis Hewan</a>
+        </li>
+        {% endif %}
+
+        {% if user_role == 'penjaga_hewan' %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Catatan Perawatan Hewan</a>
+        </li>
+        {% endif %}
+
+        {% if user_role == 'staf_admin' %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Kelola Pengunjung</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Kelola Adopsi</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Kelola Adopter</a>
+        </li>
+        {% endif %}
+
+        {% if user_role == 'pelatih_pertunjukan' %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Jadwal Pertunjukan</a>
+        </li>
+        {% endif %}
+
+        {% if user_role == 'pengunjung' %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Informasi Kebun Binatang</a>
+        </li>
+        {% endif %}
+
+        {% if user_role == 'adopter' %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Hewan Adopsi</a>
+        </li>
+        {% endif %}
+        
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <span class="nav-link disabled text-white">Welcome, {{ user.username }}</span>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-danger me-2" href="#">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="btn btn-primary me-2" href="#">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-success me-2" href="#">Register</a>
+        </li>
+        {% endif %}
+
+      </ul>
+    </div>
+  </div>
+</nav>
