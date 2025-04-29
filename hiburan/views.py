@@ -1,6 +1,9 @@
 from django.shortcuts import render
 
 # Create your views here.
+def fasilitas_menu(request):
+    return render(request, 'menu.html')
+
 # -- page atraksi --
 def data_atraksi_view(request):
     atraksi = [
@@ -73,7 +76,7 @@ def data_atraksi_view(request):
     'atraksi_entries': atraksi,
     }
 
-    return render(request, 'atraksi/data.html')
+    return render(request, 'atraksi/data.html', context)
 
 def create_atraksi_view(request):
     return render(request, 'atraksi/create.html')

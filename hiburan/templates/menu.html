@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+ {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Fasilitas</title>
+</head>
+<body>
+    <h1>Menu Fasilitas</h1>
+
+<a href="{% url 'hiburan:data_atraksi' %}">
+  <button>Data Atraksi</button>
+</a>
+<a href="{% url 'hiburan:data_wahana' %}">
+  <button>Data Wahana</button>
+</a>
+{% if user_role == 'staf_admin' %}
+<a href="{% url 'hiburan:data_reservasi' %}">
+  <button>Data Reservasi</button>
+</a>
+{% endif %}
+{% if user_role == 'pengunjung' %}
+<a href="{% url 'hiburan:create_reservasi' %}">
+  <button>Buat Reservasi</button>
+</a>
+{% endif %}
+  
+</body>
+</html>
+{% endblock content %}
