@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% block meta %}
+<title>Status Adopsi Satwa</title>
+{% endblock meta %}
+
+{% block content %}
+<div style="background-color: #f2eab8; min-height: 100vh;" class="py-5">
+    <div class="container">
+        <h1 class="text-center mb-5">Program Adopsi Satwa: Bantu Mereka dengan Cinta</h1>
+        
+        <!-- Tambahkan ilustrasi jika ada -->
+        <!-- <div class="text-center mb-4">
+            <img src="URL_ILUSTRASI" alt="Ilustrasi Adopsi" class="img-fluid" style="max-height: 300px;">
+        </div> -->
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for hewan in daftar_hewan %}
+            <div class="col">
+                <div class="card shadow-sm h-100">
+                    <img src="{{ hewan.foto_url }}" class="card-img-top" alt="Foto {{ hewan.nama|default:'Hewan' }}">
+                    <div class="card-body">
+                        {% if hewan.nama %}
+                            <h5 class="card-title">{{ hewan.nama }}</h5>
+                        {% endif %}
+                        <p class="mb-1"><strong>Spesies:</strong> {{ hewan.spesies }}</p>
+                        <p class="mb-2"><strong>Kondisi:</strong> {{ hewan.kondisi }}</p>
+                        {% if hewan.status_adopsi == "Diadopsi" %}
+                            <span class="badge bg-success mb-2">Diadopsi</span>
+                            <button class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#modalDetail{{ hewan.id }}">Lihat Detail</button>
+                        {% else %}
+                            <span class="badge bg-secondary mb-2">Tidak Diadopsi</span>
+                            <button type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#modalVerifikasiAdopter{{ hewan.id }}">Daftarkan Adopter</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Detail Adopsi -->
+            {% if hewan.status_adopsi == "Diadopsi" %}
+            <div class="modal fade" id="modalDetail{{ hewan.id }}" tabindex="-1" aria-labelledby="modalDetailLabel{{ hewan.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalDetailLabel{{ hewan.id }}">Detail Adopsi Hewan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Nama Hewan:</strong> {{ hewan.nama|default:'-' }}</p>
+                            <p><strong>Spesies:</strong> {{ hewan.spesies }}</p>
+                            <p><strong>Adopter Saat Ini:</strong> {{ hewan.nama_adopter }}</p>
+                            <p><strong>Tanggal Mulai Adopsi:</strong> {{ hewan.tanggal_adopsi }}</p>
+                            <p><strong>Tanggal Akhir Adopsi:</strong> {{ hewan.tanggal_akhir }}</p>
+                            <p><strong>Nominal Kontribusi:</strong> Rp{{ hewan.nominal_kontribusi|floatformat:0 }}</p>
+
+                            {% if is_staff %}
+                            <form method="post" action="{% url 'adopsi:update_status_adopsi' hewan.id %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="status_pembayaran{{ hewan.id }}" class="form-label">Status Pembayaran</label>
+                                    <select name="status_pembayaran" id="status_pembayaran{{ hewan.id }}" class="form-select">
+                                        <option value="Tertunda" {% if hewan.status_pembayaran == "Tertunda" %}selected{% endif %}>Tertunda</option>
+                                        <option value="Lunas" {% if hewan.status_pembayaran == "Lunas" %}selected{% endif %}>Lunas</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Tombol yang bersebelahan -->
+                                <div class="d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-primary">Simpan Status</button>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalKonfirmasiBerhenti{{ hewan.id }}">
+                                        Hentikan Adopsi
+                                    </button>
+                                </div>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Modal Verifikasi Akun Adopter -->
+            <div class="modal fade" id="modalVerifikasiAdopter{{ hewan.id }}" tabindex="-1" aria-labelledby="verifikasiLabel{{ hewan.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form method="post" action="{% url 'adopsi:verifikasi_adopter' hewan.id %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="verifikasiLabel{{ hewan.id }}">Pendataan Adopter</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                        <label for="username" class="form-label">Username calon adopter</label>
+                        <input type="text" class="form-control" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                        <label class="form-label">Calon adopter akan mengadopsi satwa sebagai:</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="tipe_adopter" id="individu{{ hewan.id }}" value="individu" required>
+                            <label class="form-check-label" for="individu{{ hewan.id }}">Individu</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="tipe_adopter" id="organisasi{{ hewan.id }}" value="organisasi" required>
+                            <label class="form-check-label" for="organisasi{{ hewan.id }}">Organisasi</label>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Verifikasi Akun</button>
+                    </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+
+            {% endfor %}
+
+            <!-- Modal Form Adopsi Individu -->
+            {% if form_adopsi_tipe == 'individu' and hewan_terpilih %}
+            <div class="modal fade show" id="formAdopsiIndividu" style="display:block;" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <form method="post" action="{% url 'adopsi:submit_adopsi_individu' hewan_terpilih.id %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                    <h5 class="modal-title">Form Adopsi Satwa (Individu)</h5>
+                    </div>
+                    <div class="modal-body">
+                    <p>Pihak di bawah ini,</p>
+                    <div class="mb-2">
+                        <label>Nama</label>
+                        <input type="text" name="nama" value="{{ adopter.nama_depan }}" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label>NIK</label>
+                        <input type="text" name="nik" class="form-control" required>
+                    </div>
+                    <p>Alamat: {{ adopter.alamat }}</p>
+                    <p>Nomor Telepon: {{ adopter.no_telepon }}</p>
+                    <hr>
+                    <p><strong>Adopsi Satwa</strong></p>
+                    <p>Nama: {{ hewan_terpilih.nama }}</p>
+                    <p>Jenis: {{ hewan_terpilih.spesies }}</p>
+                    <div class="mb-2">
+                        <label>Nominal Kontribusi (Rp)</label>
+                        <input type="number" name="nominal" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label>Periode Adopsi</label>
+                        <select name="periode" class="form-select" required>
+                        <option value="3">3 bulan</option>
+                        <option value="6">6 bulan</option>
+                        <option value="12">12 bulan</option>
+                        </select>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Submit Form</button>
+                    <a href="{% url 'adopsi:status_adopsi' %}" class="btn btn-secondary">Batal</a>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div>
+            {% endif %}
+
+            <!-- Modal Form Adopsi Organisasi -->
+            {% if form_adopsi_tipe == 'organisasi' and hewan_terpilih %}
+            <div class="modal fade show" id="formAdopsiOrganisasi" style="display:block;" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <form method="post" action="{% url 'adopsi:submit_adopsi_organisasi' hewan_terpilih.id %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                    <h5 class="modal-title">Form Adopsi Satwa (Organisasi)</h5>
+                    </div>
+                    <div class="modal-body">
+                    <p>Pihak di bawah ini, selaku organisasi/perusahaan</p>
+                    <div class="mb-2">
+                        <label>Nama Organisasi</label>
+                        <input type="text" name="nama_organisasi" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label>NPP</label>
+                        <input type="text" name="npp" class="form-control" required>
+                    </div>
+                    <p>Alamat: {{ adopter.alamat }}</p>
+                    <p>Kontak: {{ adopter.no_telepon }}</p>
+                    <hr>
+                    <p><strong>Adopsi Satwa</strong></p>
+                    <p>Nama: {{ hewan_terpilih.nama }}</p>
+                    <p>Jenis: {{ hewan_terpilih.spesies }}</p>
+                    <div class="mb-2">
+                        <label>Nominal Kontribusi (Rp)</label>
+                        <input type="number" name="nominal" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label>Periode Adopsi</label>
+                        <select name="periode" class="form-select" required>
+                        <option value="3">3 bulan</option>
+                        <option value="6">6 bulan</option>
+                        <option value="12">12 bulan</option>
+                        </select>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Submit Form</button>
+                    <a href="{% url 'adopsi:status_adopsi' %}" class="btn btn-secondary">Batal</a>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<!-- Script untuk memunculkan modal form adopsi secara otomatis -->
+{% if show_modal and form_adopsi_tipe == 'individu' and hewan_terpilih %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var modalIndividu = new bootstrap.Modal(document.getElementById('formAdopsiIndividu'));
+        modalIndividu.show();
+    });
+</script>
+{% endif %}
+
+{% if show_modal and form_adopsi_tipe == 'organisasi' and hewan_terpilih %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var modalOrganisasi = new bootstrap.Modal(document.getElementById('formAdopsiOrganisasi'));
+        modalOrganisasi.show();
+    });
+</script>
+{% endif %}
+
+<!-- Modal Konfirmasi Berhentikan Adopsi -->
+{% for hewan in daftar_hewan %}
+{% if hewan.status_adopsi == "Diadopsi" %}
+<div class="modal fade" id="modalKonfirmasiBerhenti{{ hewan.id }}" tabindex="-1" aria-labelledby="konfirmasiBerhentiLabel{{ hewan.id }}" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="konfirmasiBerhentiLabel{{ hewan.id }}">Konfirmasi Berhentikan Adopsi</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+        <p>Apakah Anda yakin ingin menghentikan adopsi ini?</p>
+      </div>
+      <div class="modal-footer">
+        <form method="post" action="{% url 'adopsi:hentikan_adopsi' hewan.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Iya</button>
+        </form>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endfor %}
+{% endblock content %}

@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'kesehatan',
+    'satwa',
+    'habitat',
+    'adopsi',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'utils.context_processors.username_and_role', 
             ],
         },
     },
