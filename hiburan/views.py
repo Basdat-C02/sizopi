@@ -25,7 +25,8 @@ reservasi = [{
 # Create your views here.
 def fasilitas_menu(request):
     context = {
-            'user_role': user_role
+            'user_role': user_role,
+            'is_authenticated': True
             }
     return render(request, 'menu.html', context)
 
@@ -99,6 +100,7 @@ def data_atraksi_view(request):
     ]
     context = {
         'user_role': user_role, 
+            'is_authenticated': True,
         'atraksi_entries': atraksi,
     }
 
@@ -107,6 +109,7 @@ def data_atraksi_view(request):
 def create_atraksi_view(request):
     context = {
         'user_role': user_role,
+        'is_authenticated': True,
         'pelatih_list': pelatih_list
     }
     return render(request, 'atraksi/create.html', context)
@@ -115,6 +118,7 @@ def edit_atraksi_view(request, nama):
     context = {
         'user_role': user_role, 
         'nama': nama,
+        'is_authenticated': True,
         'pelatih_list': pelatih_list
     }
     return render(request, 'atraksi/edit.html', context)
@@ -157,20 +161,22 @@ def data_wahana_view(request):
     },
 ]
     context = {
-        'user_role': 'staf_admin',
-
+        'user_role': user_role,
+        'is_authenticated': True,
         'wahana_entries': wahana
     }
     return render(request, 'wahana/data.html', context)
 
 def create_wahana_view(request):
     context = {
+        'is_authenticated': True,
         'user_role': user_role,
     }
     return render(request, 'wahana/create.html', context)
 
 def edit_wahana_view(request, nama):
     context = {
+        'is_authenticated': True,
         'user_role': user_role,
         'nama': nama
     }
@@ -182,6 +188,7 @@ def delete_wahana_view(request):
 # -- page reservasi --
 def data_reservasi_view(request):
     context = {
+        'is_authenticated': True,
         'user_role': user_role,
         'reservasi': reservasi,
     }
@@ -189,23 +196,27 @@ def data_reservasi_view(request):
 
 def create_reservasi_view(request):
     context = {
+        'is_authenticated': True,
         'user_role': user_role,
     }
     return render(request, 'reservasi/create.html', context)
 
 def detail_reservasi_view(request, id):
     context = {
+        'is_authenticated': True,
         'user_role': user_role,
         'reservasi': reservasi,
+        'id': id
     }
     return render(request, 'reservasi/detail.html', context)
 
-def edit_reservasi_view(request, nama):
+def edit_reservasi_view(request, id):
     context = {
+        'is_authenticated': True,
         'user_role': user_role,
-        'nama': nama
+        'id': id
     }
     return render(request, 'reservasi/edit.html', context)
 
-def delete_reservasi_view(request, nama):
+def delete_reservasi_view(request, id):
     return render(request, 'reservasi/delete.html')
