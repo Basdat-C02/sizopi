@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+ {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Atraksi</title>
+</head>
+<body>
+    <div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
+        <div class="border shadow-sm p-4 rounded-3 bg-white" style="width: 500px;">
+            <h1 class="text-center mb-4">Tambah Atraksi</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label>Nama Atraksi</label>
+                    <input type="text" name="nama_atraksi" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Lokasi</label>
+                    <input type="text" name="lokasi" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Kapasitas Maksimum</label>
+                    <input type="text" name="kapasitas_maksimum" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label htmlFor="pelatih_pertunjukan">Pelatih Pertunjukan</label>
+                    <select
+                      id="pelatih_pertunjukan"
+                      value={pelatih_pertunjukan}
+                    >
+                      <option value="">Pilih pelatih</option>
+                      <option value="Budi">Budi</option>
+                      <option value="Kurniawan">Kurniawan</option>
+                      <option value="Maisaroh">Maisaroh</option>
+                      <option value="Syauqi">Syauqi</option>
+                      <option value="Azka">Azka</option>
+                      <option value="Manny">Manny</option>
+                      <option value="Syifa">Syifa</option>
+                      <option value="Munaroh">Munaroh</option>
+                    </select>
+                    <input type="" name="pelatih_pertunjukan" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Jadwal</label>
+                    <input type="time" name="jadwal" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success w-100">Tambah</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock content %}
