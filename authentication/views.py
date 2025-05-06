@@ -45,7 +45,7 @@ def register_pengunjung_view(request):
             "no_telepon": request.POST.get("no_telepon"),
             "alamat": request.POST.get("alamat"),
             "tgl_lahir": request.POST.get("tanggal_lahir"),
-            "role": "pengunjung",
+            "role": "Pengunjung",
         }
         
         if request.POST.get("password") != request.POST.get("confirm_password"):
@@ -74,7 +74,7 @@ def register_dokter_hewan_view(request):
             "no_telepon": request.POST.get("no_telepon"),
             "no_str": request.POST.get("no_str"),
             "spesialisasi": spesialisasi,
-            "role": "dokter_hewan",
+            "role": "Dokter Hewan",
         }
         
         if request.POST.get("password") != request.POST.get("confirm_password"):
@@ -91,12 +91,6 @@ def register_staff_view(request):
     if request.method == 'POST':
         peran = request.POST.get("peran")
         id_staf = str(uuid.uuid4())
-        role_map = {
-            "Penjaga Hewan": "penjaga_hewan",
-            "Staf Administrasi": "staf_admin",
-            "Pelatih Pertunjukan": "pelatih_hewan"
-        }
-        mapped_peran = role_map.get(peran)
         data = {
             "username": request.POST.get("username"),
             "password": request.POST.get("password"),
@@ -105,7 +99,7 @@ def register_staff_view(request):
             "nama_tengah": request.POST.get("nama_tengah"),
             "nama_belakang": request.POST.get("nama_belakang"),
             "no_telepon": request.POST.get("no_telepon"),
-            "role": mapped_peran,
+            "role": peran,
             "id_staf": id_staf
         }
         

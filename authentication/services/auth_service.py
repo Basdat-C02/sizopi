@@ -18,11 +18,11 @@ class AuthService:
         plh.id_staf AS id_staf_pelatih,
         sa.id_staf AS id_staf_admin,
         CASE
-            WHEN PENG.username_p IS NOT NULL THEN 'pengunjung'
-            WHEN DH.username_dh IS NOT NULL THEN 'dokter_hewan'
-            WHEN pjh.username_jh IS NOT NULL THEN 'penjaga_hewan'
-            WHEN plh.username_lh IS NOT NULL THEN 'pelatih_hewan'
-            WHEN sa.username_sa IS NOT NULL THEN 'staf_admin'
+            WHEN PENG.username_p IS NOT NULL THEN 'Pengunjung'
+            WHEN DH.username_dh IS NOT NULL THEN 'Dokter Hewan'
+            WHEN pjh.username_jh IS NOT NULL THEN 'Penjaga Hewan'
+            WHEN plh.username_lh IS NOT NULL THEN 'Pelatih Hewan'
+            WHEN sa.username_sa IS NOT NULL THEN 'Staf Admin'
             ELSE 'unknown'
         END AS role
     """
@@ -59,11 +59,11 @@ class AuthService:
         role = result.get("role")
 
         result["is_pengguna"] = bool(role)
-        result["is_pengunjung"] = role == "pengunjung"
-        result["is_dokter_hewan"] = role == "dokter_hewan"
-        result["is_penjaga_hewan"] = role == "penjaga_hewan"
-        result["is_pelatih_hewan"] = role == "pelatih_hewan"
-        result["is_staf_admin"] = role == "staf_admin"
+        result["is_pengunjung"] = role == "Pengunjung"
+        result["is_dokter_hewan"] = role == "Dokter Hewan"
+        result["is_penjaga_hewan"] = role == "Penjaga Hewan"
+        result["is_pelatih_hewan"] = role == "Pelatih Hewan"
+        result["is_staf_admin"] = role == "Staf Admin"
         
         return result
     
@@ -79,6 +79,7 @@ class AuthService:
     
     @staticmethod
     def create_profile(data: dict):
+        AuthService.create_pengguna(data)
         role = data.get("role")
         if role == "pengunjung":
             AuthService.create_pengunjung(data)
@@ -103,7 +104,6 @@ class AuthService:
     
     @staticmethod
     def create_pengunjung(data: dict):
-        AuthService.create_pengguna(data)
         sql = """
         INSERT INTO PENGUNJUNG (username_p, alamat, tgl_lahir)
         VALUES (%s, %s, %s)
@@ -112,7 +112,6 @@ class AuthService:
     
     @staticmethod
     def create_dokter_hewan(data: dict):
-        AuthService.create_pengguna(data)
         sql = """
         INSERT INTO DOKTER_HEWAN (username_dh, no_str)
         VALUES (%s, %s)
@@ -127,7 +126,6 @@ class AuthService:
     
     @staticmethod
     def create_staff_member(data: dict):
-        AuthService.create_pengguna(data)
         sql = ""
         if data["role"] == "staf_admin":
             sql = """
@@ -148,6 +146,7 @@ class AuthService:
     
     @staticmethod
     def update_profile(data: dict):
+        AuthService.update_pengguna(data)
         role = data.get("role")
         if role == "pengunjung":
             AuthService.update_pengunjung(data)
@@ -166,7 +165,6 @@ class AuthService:
         """
         execute_query(sql, [hashed, username])
 
-    
     @staticmethod
     def update_pengguna(data: dict):
         sql = """
@@ -186,7 +184,6 @@ class AuthService:
     
     @staticmethod
     def update_pengunjung(data: dict):
-        AuthService.update_pengguna(data)
         sql = """
         UPDATE PENGUNJUNG
         SET alamat = %s,
@@ -197,7 +194,6 @@ class AuthService:
     
     @staticmethod
     def update_dokter_hewan(data: dict):
-        AuthService.update_pengguna(data)
         sql = """
         UPDATE DOKTER_HEWAN
         SET no_str = %s
@@ -214,7 +210,6 @@ class AuthService:
     
     @staticmethod
     def update_staff_member(data: dict):
-        AuthService.update_pengguna(data)
         sql = ""
         if data["role"] == "staf_admin":
             sql = """
