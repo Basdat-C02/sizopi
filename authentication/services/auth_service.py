@@ -230,3 +230,109 @@ class AuthService:
             WHERE username_lh = %s
             """
         execute_query(sql, [data["id_staf"], data["username"]])
+    
+    @staticmethod
+    def get_user_detail(username:str):
+        user = AuthService.get_user_by_username(username)
+        if not user:
+            return None
+        if user["is_pengunjung"]:
+            AuthService.get_pengunjung_detail(user)
+        elif user["is_dokter_hewan"]:
+            AuthService.get_dokter_hewan_detail(user)
+        elif user["is_penjaga_hewan"]:
+            AuthService.get_penjaga_hewan_detail(user)
+        elif user["is_pelatih_hewan"]:
+            AuthService.get_pelatih_hewan_detail(user)
+        elif user["is_staf_admin"]:
+            AuthService.get_staf_admin_detail(user)
+    
+    @staticmethod
+    def get_pengunjung_detail(data: dict):
+        username = data["username"]
+        
+        reservasi = fetch_dict_all("""
+            SELECT R.tanggal_kunjungan, A.nama_atraksi, A.lokasi, R.status
+            FROM RESERVASI R
+            JOIN ATRAKSI A ON R.nama_atraksi = A.nama_atraksi
+            WHERE R.username_p = %s
+            ORDER BY R.tanggal_kunjungan DESC
+        """, [username])
+        
+        tiket = fetch_dict_all("""
+            SELECT R.nama_atraksi, SUM(R.jumlah_tiket) AS jumlah_tiket
+            FROM RESERVASI R
+            WHERE R.username_p = %s
+            GROUP BY R.nama_atraksi
+        """, [username])
+        
+        data["riwayat_kunjungan"] = reservasi
+        data["informasi_tiket_dibeli"] = tiket
+        return data
+
+    @staticmethod
+    def get_dokter_hewan_detail(data: dict):
+        username = data["username"]
+        
+        spesialisasi = fetch_dict_all("""
+            SELECT nama_spesialisasi FROM SPESIALISASI WHERE username_sh = %s
+        """, [username])
+        
+        jumlah_hewan = fetch_dict_all("""
+            SELECT COUNT(DISTINCT id_hewan) AS jumlah_hewan FROM CATATAN_MEDIS WHERE username_dh = %s
+        """, [username])
+        
+        data["spesialisasi"] = [s["nama_spesialisasi"] for s in spesialisasi]
+        data["jumlah_hewan"] = jumlah_hewan[0]["jumlah_hewan"] if jumlah_hewan else 0
+        return data
+    
+    @staticmethod
+    def get_penjaga_hewan_detail(data: dict):
+        username = data["username"]
+        
+        jumlah_hewan = fetch_dict_one("""
+            SELECT COUNT(DISTINCT id_hewan) AS total FROM MEMBERI WHERE username_jh = %s
+        """, [username])
+        
+        data["jumlah_hewan_diberi_pakan"] = jumlah_hewan["total"] if jumlah_hewan else 0
+        return data
+    
+    @staticmethod
+    def get_pelatih_hewan_detail(data: dict):
+        username = data["username"]
+        
+        jadwal_penugasan = fetch_dict_all("""
+            SELECT tgl_penugasan AS waktu, nama_atraksi AS nama_pertunjukan
+            FROM JADWAL_PENUGASAN
+            WHERE username_lh = %s
+        """, [username])
+        
+        hewan_dilatih = fetch_dict_all("""
+            SELECT DISTINCT H.nama
+            FROM BERPARTISIPASI B
+            JOIN HEWAN H ON B.id_hewan = H.id
+            JOIN JADWAL_PENUGASAN JP ON B.nama_fasilitas = JP.nama_atraksi
+            WHERE JP.username_lh = %s
+        """, [username])
+        
+        data["jadwal_pertunjukan"] = jadwal_penugasan
+        data["daftar_hewan_dilatih"] = [h["nama"] for h in hewan_dilatih]
+        return data
+    
+    @staticmethod
+    def get_staf_admin_detail(data: dict):
+        username = data["username"]
+        
+        jumlah_pengunjung = fetch_dict_one("""
+            SELECT COUNT(DISTINCT username_p) AS jumlah
+            FROM RESERVASI
+        """)
+        
+        laporan_pendapatan = fetch_dict_one("""
+            SELECT COALESCE(SUM(jumlah_tiket * 25000), 0) AS total
+            FROM RESERVASI
+        """)
+
+        data["jumlah_pengunjung"] = jumlah_pengunjung["jumlah"] if jumlah_pengunjung else 0
+        data["ringkasan_penjualan_tiket"] = laporan_pendapatan["total"] if laporan_pendapatan else 0
+        return data

@@ -114,4 +114,24 @@ def register_staff_view(request):
     return render(request, 'register/staf.html')
 
 def profile_view(request):
-    pass
+    if not request.user.get("is_authenticated"):
+        return redirect("authentication:login")
+
+    role = request.user["role"]
+    username = request.user["username"]
+    
+    data = AuthService.get_user_detail(username)
+
+    if role == "Pengunjung":
+        return render(request, "profile/pengunjung.html", {"data_pengunjung": data})
+    elif role == "Dokter Hewan":
+        return render(request, "profile/dokter_hewan.html", {"data_profile": data})
+    elif role == "Penjaga Hewan":
+        return render(request, "profile/penjaga_hewan.html", {"data_profile": data})
+    elif role == "Pelatih Hewan":
+        return render(request, "profile/pelatih_hewan.html", {"data_profile": data})
+    elif role == "Staf Admin":
+        return render(request, "profile/staf_admin.html", {"data_profile": data})
+    else:
+        messages.error(request, "Peran tidak dikenali.")
+        return redirect("authentication:login")

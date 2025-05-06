@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="mb-2 fw-bold text-secondary">Jadwal Pertunjukan Hari Ini:</div>
+                            <div class="mb-2 fw-bold text-secondary">Jadwal Pertunjukan</div>
                             <div class="table-responsive">
                                 <table class="table table-hover table-striped">
                                     <thead class="table-success">
@@ -70,7 +70,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for jadwal in data_profile.jadwal_pertunjukan_hari_ini %}
+                                        {% for jadwal in data_profile.jadwal_pertunjukan %}
                                         <tr>
                                             <td>{{ jadwal.waktu }}</td>
                                             <td>{{ jadwal.nama_pertunjukan }}</td>
