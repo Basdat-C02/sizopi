@@ -94,9 +94,8 @@ class AuthService:
         INSERT INTO sizopi.PENGGUNA (username, email, password, nama_depan, nama_tengah, nama_belakang, no_telepon)
         VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
-        hashed_password = AuthService.hash_password(data["password"])
         params = [
-            data["username"], data["email"], hashed_password,
+            data["username"], data["email"], data["password"],
             data["nama_depan"], data.get("nama_tengah"),
             data["nama_belakang"], data["no_telepon"]
         ]
@@ -246,6 +245,8 @@ class AuthService:
             AuthService.get_pelatih_hewan_detail(user)
         elif user["is_staf_admin"]:
             AuthService.get_staf_admin_detail(user)
+        
+        return user
     
     @staticmethod
     def get_pengunjung_detail(data: dict):

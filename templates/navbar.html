@@ -8,7 +8,7 @@
         <ul class="navbar-nav mb-2 mb-lg-0 align-items-center gap-2">
             {% if is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link text-white" href="{% url 'authentication:profile' %}">Dashboard</a>
+                <a class="nav-link text-white" href="{% url 'authentication:profile_pengguna' %}">Dashboard</a>
             </li>
             {% endif %} {% if user_role == 'dokter_hewan' %}
             <li class="nav-item">
@@ -42,7 +42,7 @@
             </li>
             {% endif %} {% if is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link text-white" href="{% url 'authentication:profile' %}">Pengaturan Profil</a>
+                <a class="nav-link text-white" href="">Pengaturan Profil</a>
             </li>
             <li class="nav-item">
                 <a class="btn btn-danger" href="{% url 'authentication:logout' %}">Logout</a>

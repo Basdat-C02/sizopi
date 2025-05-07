@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from authentication.services.auth_service import AuthService
 from authentication.utils.jwt_utils import generate_jwt
-from django.http import HttpResponse
+
 
 # Create your views here.
 def landing_view(request):
@@ -22,7 +22,7 @@ def login_view(request):
             messages.error(request, 'Username tidak ditemukan')
             return redirect('authentication:login')
         
-        if not AuthService.check_password(password, user['password']):
+        if password != user['password']:
             messages.error(request, 'Password salah')
             return redirect('authentication:login')
         
@@ -123,6 +123,7 @@ def profile_view(request):
     data = AuthService.get_user_detail(username)
 
     if role == "Pengunjung":
+        print(data)
         return render(request, "profile/pengunjung.html", {"data_pengunjung": data})
     elif role == "Dokter Hewan":
         return render(request, "profile/dokter_hewan.html", {"data_profile": data})
