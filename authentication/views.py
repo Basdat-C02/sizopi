@@ -27,7 +27,7 @@ def login_view(request):
             return redirect('authentication:login')
         
         token = generate_jwt(username)
-        response = redirect('authentication:profile')
+        response = redirect('authentication:profile_pengguna')
         response.set_cookie('jwt', token, httponly=True, samesite='Strict')
         return response
         

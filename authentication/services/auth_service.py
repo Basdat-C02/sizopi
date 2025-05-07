@@ -31,12 +31,12 @@ class AuthService:
     def get_all_user():
         sql = f"""
         SELECT {AuthService.PENGGUNA_FIELDS}
-        FROM PENGGUNA P
-        LEFT JOIN PENGUNJUNG PENG ON P.username = PENG.username_p
-        LEFT JOIN DOKTER_HEWAN DH ON P.username = DH.username_dh
-        LEFT JOIN PENJAGA_HEWAN pjh ON P.username = pjh.username_jh
-        LEFT JOIN PELATIH_HEWAN plh ON P.username = plh.username_lh
-        LEFT JOIN STAF_ADMIN sa ON P.username = sa.username_sa
+        FROM sizopi.PENGGUNA P
+        LEFT JOIN sizopi.PENGUNJUNG PENG ON P.username = PENG.username_p
+        LEFT JOIN sizopi.DOKTER_HEWAN DH ON P.username = DH.username_dh
+        LEFT JOIN sizopi.PENJAGA_HEWAN pjh ON P.username = pjh.username_jh
+        LEFT JOIN sizopi.PELATIH_HEWAN plh ON P.username = plh.username_lh
+        LEFT JOIN sizopi.STAF_ADMIN sa ON P.username = sa.username_sa
         """
         return fetch_dict_all(sql)
     
@@ -44,12 +44,12 @@ class AuthService:
     def get_user_by_username(username: str) :
         sql = f"""
         SELECT {AuthService.PENGGUNA_FIELDS}
-        FROM PENGGUNA P
-        LEFT JOIN PENGUNJUNG PENG ON P.username = PENG.username_p
-        LEFT JOIN DOKTER_HEWAN DH ON P.username = DH.username_dh
-        LEFT JOIN PENJAGA_HEWAN pjh ON P.username = pjh.username_jh
-        LEFT JOIN PELATIH_HEWAN plh ON P.username = plh.username_lh
-        LEFT JOIN STAF_ADMIN sa ON P.username = sa.username_sa
+        FROM sizopi.PENGGUNA P
+        LEFT JOIN sizopi.PENGUNJUNG PENG ON P.username = PENG.username_p
+        LEFT JOIN sizopi.DOKTER_HEWAN DH ON P.username = DH.username_dh
+        LEFT JOIN sizopi.PENJAGA_HEWAN pjh ON P.username = pjh.username_jh
+        LEFT JOIN sizopi.PELATIH_HEWAN plh ON P.username = plh.username_lh
+        LEFT JOIN sizopi.STAF_ADMIN sa ON P.username = sa.username_sa
         WHERE P.username = %s
         """
         result = fetch_dict_one(sql, [username])
@@ -91,7 +91,7 @@ class AuthService:
     @staticmethod
     def create_pengguna(data: dict):
         sql = """
-        INSERT INTO PENGGUNA (username, email, password, nama_depan, nama_tengah, nama_belakang, no_telepon)
+        INSERT INTO sizopi.PENGGUNA (username, email, password, nama_depan, nama_tengah, nama_belakang, no_telepon)
         VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
         hashed_password = AuthService.hash_password(data["password"])
@@ -105,7 +105,7 @@ class AuthService:
     @staticmethod
     def create_pengunjung(data: dict):
         sql = """
-        INSERT INTO PENGUNJUNG (username_p, alamat, tgl_lahir)
+        INSERT INTO sizopi.PENGUNJUNG (username_p, alamat, tgl_lahir)
         VALUES (%s, %s, %s)
         """
         execute_query(sql, [data["username"], data["alamat"], data["tgl_lahir"]])
@@ -113,14 +113,14 @@ class AuthService:
     @staticmethod
     def create_dokter_hewan(data: dict):
         sql = """
-        INSERT INTO DOKTER_HEWAN (username_dh, no_str)
+        INSERT INTO sizopi.DOKTER_HEWAN (username_dh, no_str)
         VALUES (%s, %s)
         """
         execute_query(sql, [data["username"], data["no_str"]])
         
         for spesialis in data["spesialisasi"]:
             execute_query(
-                "INSERT INTO SPESIALISASI (username_sh, nama_spesialisasi) VALUES (%s, %s)",
+                "INSERT INTO sizopi.SPESIALISASI (username_sh, nama_spesialisasi) VALUES (%s, %s)",
                 [data["username"], spesialis]
             )
     
@@ -129,17 +129,17 @@ class AuthService:
         sql = ""
         if data["role"] == "staf_admin":
             sql = """
-            INSERT INTO STAF_ADMIN (username_sa, id_staf)
+            INSERT INTO sizopi.STAF_ADMIN (username_sa, id_staf)
             VALUES (%s, %s)
             """
         elif data["role"] == "penjaga_hewan":
             sql = """
-            INSERT INTO PENJAGA_HEWAN (username_jh, id_staf)
+            INSERT INTO sizopi.PENJAGA_HEWAN (username_jh, id_staf)
             VALUES (%s, %s)
             """
         elif data["role"] == "pelatih_hewan":
             sql = """
-            INSERT INTO PELATIH_HEWAN (username_lh, id_staf)
+            INSERT INTO sizopi.PELATIH_HEWAN (username_lh, id_staf)
             VALUES (%s, %s)
             """
         execute_query(sql, [data["username"], data["id_staf"]])
@@ -159,7 +159,7 @@ class AuthService:
     def update_password(username: str, new_password: str):
         hashed = AuthService.hash_password(new_password)
         sql = """
-        UPDATE PENGGUNA
+        UPDATE sizopi.PENGGUNA
         SET password = %s
         WHERE username = %s
         """
@@ -168,7 +168,7 @@ class AuthService:
     @staticmethod
     def update_pengguna(data: dict):
         sql = """
-        UPDATE PENGGUNA
+        UPDATE sizopi.PENGGUNA
         SET email = %s,
             nama_depan = %s,
             nama_tengah = %s,
@@ -185,7 +185,7 @@ class AuthService:
     @staticmethod
     def update_pengunjung(data: dict):
         sql = """
-        UPDATE PENGUNJUNG
+        UPDATE sizopi.PENGUNJUNG
         SET alamat = %s,
             tgl_lahir = %s
         WHERE username_p = %s
@@ -195,16 +195,16 @@ class AuthService:
     @staticmethod
     def update_dokter_hewan(data: dict):
         sql = """
-        UPDATE DOKTER_HEWAN
+        UPDATE sizopi.DOKTER_HEWAN
         SET no_str = %s
         WHERE username_dh = %s
         """
         execute_query(sql, [data["no_str"], data["username"]])
         
-        execute_query("DELETE FROM SPESIALISASI WHERE username_sh = %s", [data["username"]])
+        execute_query("DELETE FROM sizopi.SPESIALISASI WHERE username_sh = %s", [data["username"]])
         for spesialis in data.get("spesialisasi", []):
             execute_query(
-                "INSERT INTO SPESIALISASI (username_sh, nama_spesialisasi) VALUES (%s, %s)",
+                "INSERT INTO sizopi.SPESIALISASI (username_sh, nama_spesialisasi) VALUES (%s, %s)",
                 [data["username"], spesialis]
             )
     
@@ -213,19 +213,19 @@ class AuthService:
         sql = ""
         if data["role"] == "staf_admin":
             sql = """
-            UPDATE STAF_ADMIN
+            UPDATE sizopi.STAF_ADMIN
             SET id_staf = %s
             WHERE username_sa = %s
             """
         elif data["role"] == "penjaga_hewan":
             sql = """
-            UPDATE PENJAGA_HEWAN
+            UPDATE sizopi.PENJAGA_HEWAN
             SET id_staf = %s
             WHERE username_jh = %s
             """
         elif data["role"] == "pelatih_hewan":
             sql = """
-            UPDATE PELATIH_HEWAN
+            UPDATE sizopi.PELATIH_HEWAN
             SET id_staf = %s
             WHERE username_lh = %s
             """
@@ -253,15 +253,15 @@ class AuthService:
         
         reservasi = fetch_dict_all("""
             SELECT R.tanggal_kunjungan, A.nama_atraksi, A.lokasi, R.status
-            FROM RESERVASI R
-            JOIN ATRAKSI A ON R.nama_atraksi = A.nama_atraksi
+            FROM sizopi.RESERVASI R
+            JOIN sizopi.ATRAKSI A ON R.nama_atraksi = A.nama_atraksi
             WHERE R.username_p = %s
             ORDER BY R.tanggal_kunjungan DESC
         """, [username])
         
         tiket = fetch_dict_all("""
             SELECT R.nama_atraksi, SUM(R.jumlah_tiket) AS jumlah_tiket
-            FROM RESERVASI R
+            FROM sizopi.RESERVASI R
             WHERE R.username_p = %s
             GROUP BY R.nama_atraksi
         """, [username])
@@ -275,11 +275,11 @@ class AuthService:
         username = data["username"]
         
         spesialisasi = fetch_dict_all("""
-            SELECT nama_spesialisasi FROM SPESIALISASI WHERE username_sh = %s
+            SELECT nama_spesialisasi FROM sizopi.SPESIALISASI WHERE username_sh = %s
         """, [username])
         
         jumlah_hewan = fetch_dict_all("""
-            SELECT COUNT(DISTINCT id_hewan) AS jumlah_hewan FROM CATATAN_MEDIS WHERE username_dh = %s
+            SELECT COUNT(DISTINCT id_hewan) AS jumlah_hewan FROM sizopi.CATATAN_MEDIS WHERE username_dh = %s
         """, [username])
         
         data["spesialisasi"] = [s["nama_spesialisasi"] for s in spesialisasi]
@@ -291,7 +291,7 @@ class AuthService:
         username = data["username"]
         
         jumlah_hewan = fetch_dict_one("""
-            SELECT COUNT(DISTINCT id_hewan) AS total FROM MEMBERI WHERE username_jh = %s
+            SELECT COUNT(DISTINCT id_hewan) AS total FROM sizopi.MEMBERI WHERE username_jh = %s
         """, [username])
         
         data["jumlah_hewan_diberi_pakan"] = jumlah_hewan["total"] if jumlah_hewan else 0
@@ -303,15 +303,15 @@ class AuthService:
         
         jadwal_penugasan = fetch_dict_all("""
             SELECT tgl_penugasan AS waktu, nama_atraksi AS nama_pertunjukan
-            FROM JADWAL_PENUGASAN
+            FROM sizopi.JADWAL_PENUGASAN
             WHERE username_lh = %s
         """, [username])
         
         hewan_dilatih = fetch_dict_all("""
             SELECT DISTINCT H.nama
-            FROM BERPARTISIPASI B
-            JOIN HEWAN H ON B.id_hewan = H.id
-            JOIN JADWAL_PENUGASAN JP ON B.nama_fasilitas = JP.nama_atraksi
+            FROM sizopi.BERPARTISIPASI B
+            JOIN sizopi.HEWAN H ON B.id_hewan = H.id
+            JOIN sizopi.JADWAL_PENUGASAN JP ON B.nama_fasilitas = JP.nama_atraksi
             WHERE JP.username_lh = %s
         """, [username])
         
@@ -325,12 +325,12 @@ class AuthService:
         
         jumlah_pengunjung = fetch_dict_one("""
             SELECT COUNT(DISTINCT username_p) AS jumlah
-            FROM RESERVASI
+            FROM sizopi.RESERVASI
         """)
         
         laporan_pendapatan = fetch_dict_one("""
             SELECT COALESCE(SUM(jumlah_tiket * 25000), 0) AS total
-            FROM RESERVASI
+            FROM sizopi.RESERVASI
         """)
 
         data["jumlah_pengunjung"] = jumlah_pengunjung["jumlah"] if jumlah_pengunjung else 0
