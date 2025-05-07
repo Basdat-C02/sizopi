@@ -235,6 +235,7 @@ class AuthService:
         user = AuthService.get_user_by_username(username)
         if not user:
             return None
+        user["nama_lengkap"] = f"{user['nama_depan']} {user['nama_tengah'] or ''} {user['nama_belakang']}"
         if user["is_pengunjung"]:
             AuthService.get_pengunjung_detail(user)
         elif user["is_dokter_hewan"]:

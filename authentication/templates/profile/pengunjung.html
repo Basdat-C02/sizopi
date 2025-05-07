@@ -6,7 +6,7 @@
 
 {% block content %}
 <div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center p-5">
-    <h2 class="text-center mb-4 display-4 fw-bold text-success">Profil {{ data_pengunjung.peran }}</h2>
+    <h2 class="text-center mb-4 display-4 fw-bold text-success">Profil {{ data_pengunjung.role }}</h2>
     <div class="container">
         <div class="card shadow-lg rounded-3 border-0" style="max-width: 1000px; margin: 0 auto;">
             <div class="card-header bg-success bg-gradient text-white p-4 rounded-top-3">
@@ -47,13 +47,13 @@
                         <div class="col-md-6">
                             <div class="d-flex">
                                 <div class="fw-bold text-secondary" style="width: 150px;">Alamat:</div>
-                                <div class="flex-grow-1">{{ data_pengunjung.alamat_lengkap }}</div>
+                                <div class="flex-grow-1">{{ data_pengunjung.alamat }}</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex">
                                 <div class="fw-bold text-secondary" style="width: 150px;">Tanggal Lahir:</div>
-                                <div class="flex-grow-1">{{ data_pengunjung.tanggal_lahir }}</div>
+                                <div class="flex-grow-1">{{ data_pengunjung.tgl_lahir }}</div>
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                                 </tr>
                                 {% empty %}
                                 <tr>
-                                    <td colspan="4" class="text-center">Belum ada riwayat kunjungan</td>
+                                    <td colspan="5" class="text-center">Belum ada riwayat kunjungan</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
