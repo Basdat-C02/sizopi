@@ -135,3 +135,8 @@ def profile_view(request):
     else:
         messages.error(request, "Peran tidak dikenali.")
         return redirect("authentication:login")
+
+def logout_view(request):
+    response = redirect("authentication:login")
+    response.delete_cookie("jwt")
+    return response
