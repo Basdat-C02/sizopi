@@ -4,7 +4,7 @@ from .views import *
 app_name = 'authentication'
 
 urlpatterns = [
-    path('', home_view, name='landing'),
+    path('', landing_view, name='landing'),
     path('auth/login/', login_view, name='login'),
     path('auth/choose-role/', choose_role_view, name='choose_role'),
     path('auth/register-pengunjung/', register_pengunjung_view, name='register_pengunjung'),
