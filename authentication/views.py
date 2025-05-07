@@ -85,7 +85,7 @@ def register_dokter_hewan_view(request):
         messages.success(request, "Registrasi berhasil. Silakan login.")
         return redirect("authentication:login")
     
-    return render(request, 'register/dokter.html')
+    return render(request, 'register/dokter_hewan.html')
 
 def register_staff_view(request):
     if request.method == 'POST':
