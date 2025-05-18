@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block meta %}
+<title>Pengaturan Profil</title>
+{% endblock meta %}
+
+{% block content %}
+<div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="border shadow-sm p-4 rounded-3 bg-white" style="width: 500px;">
+        <h1 class="text-center mb-4">Pengaturan Profil</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label>Username</label>
+                <input type="text" name="username" value="ariq.maulana" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Password</label>
+                <input type="password" name="password" value="**********" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Konfirmasi Password</label>
+                <input type="password" name="confirm_password" value="**********" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nama Depan</label>
+                <input type="text" name="nama_depan" value="Ariq" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nama Tengah (Opsional)</label>
+                <input type="text" name="nama_tengah" value="Maulana" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>Nama Belakang</label>
+                <input type="text" name="nama_belakang" value="Malik" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" name="email" value="ariq.maulana@gmail.com" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nomor Telepon</label>
+                <input type="text" name="no_telepon" value="081234568090" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Peran</label><br>
+                <select name="peran" class="form-select" required>
+                    <option value="">-- Pilih Peran --</option>
+                    <option value="Penjaga Hewan">Penjaga Hewan</option>
+                    <option value="Staf Administrasi">Staf Administrasi</option>
+                    <option value="Pelatih Pertunjukan">Pelatih Pertunjukan</option>
+                </select>
+            </div>
+            <div class="d-flex flex-column gap-2">
+                <button type="submit" class="btn btn-success w-100">Simpan</button>
+                <button type="submit" class="btn btn-success w-100">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

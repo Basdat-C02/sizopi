@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block meta %}
+<title>Pengaturan Profil</title>
+{% endblock meta %}
+
+{% block content %}
+<div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="border shadow-sm p-4 rounded-3 bg-white" style="width: 500px;">
+        <h1 class="text-center mb-4">Pengaturan Profil</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label>Username</label>
+                <input type="text" name="username" value="farhan.nur" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Password</label>
+                <input type="password" name="password" value="************" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Konfirmasi Password</label>
+                <input type="password" name="confirm_password" value="************" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nama Depan</label>
+                <input type="text" name="nama_depan" value="Farhan" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nama Tengah (Opsional)</label>
+                <input type="text" name="nama_tengah" value="Nur" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>Nama Belakang</label>
+                <input type="text" name="nama_belakang" value="Hakim" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" name="email" value="farhan.hakim@gmail.com" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nomor Telepon</label>
+                <input type="text" name="no_telepon" value="081234568050" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nomor STR (Sertifikasi)</label>
+                <input type="text" name="no_str" value="STR-001" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Spesialisasi</label><br>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="spesialisasi" value="Mamalia Besar" checked>
+                    <label class="form-check-label">Mamalia Besar</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="spesialisasi" value="Reptil">
+                    <label class="form-check-label">Reptil</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="spesialisasi" value="Burung Eksotis">
+                    <label class="form-check-label">Burung Eksotis</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="spesialisasi" value="Primata">
+                    <label class="form-check-label">Primata</label>
+                </div>
+                <input type="text" name="spesialisasi_lainnya" value="Bedah Hewan" class="form-control mt-2" placeholder="Lainnya (opsional)">
+            </div>
+            <div class="d-flex flex-column gap-2">
+                <button type="submit" class="btn btn-success w-100">Simpan</button>
+                <button type="submit" class="btn btn-success w-100">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
