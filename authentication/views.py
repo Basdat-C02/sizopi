@@ -10,7 +10,7 @@ def landing_view(request):
     return render(request, 'landing/index.html')
 
 def choose_role_view(request):
-    return render(request, 'choose_role/index.html')
+    return render(request, 'choose_role/index.html', {'is_authenticated': False})
 
 def login_view(request):
     if request.method == 'POST':

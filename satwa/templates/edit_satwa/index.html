@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block meta %}
+<title>Edit Data Satwa</title>
+{% endblock meta %}
+
+{% block content %}
+<div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="border shadow-sm p-4 rounded-3 bg-white" style="width: 600px;">
+        <h1 class="text-center mb-4">Form Edit Data Satwa</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label>Nama Individu (Opsional) </label>
+                <input type="text" name="nama" value="{{ satwa.nama }}" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>Spesies</label>
+                <input type="text" name="spesies" value="{{ satwa.spesies }}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Asal Hewan</label>
+                <input type="text" name="origin" value="{{ satwa.asal_hewan }}" class="form-control" required>
+            </div>
+            <div class="mb-4">
+                <label>Tanggal Lahir (opsional) </label>
+                <input type="date" name="tanggal_lahir" value="{{ satwa.tanggal_lahir }}" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>Status Kesehatan</label>
+                <select name="status_kesehatan" class="form-select">
+                    {% for status in status_kesehatan %}
+                        <option value="{{ status }}" {% if satwa.status_kesehatan == status %}selected{% endif %}>
+                            {{ status }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Habitat</label>
+                <select name="habitat" class="form-select">
+                    {% for habitat in daftar_habitat %}
+                        <option value="{{ habitat }}" {% if satwa.habitat == habitat %}selected{% endif %}>
+                            {{ habitat }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>URL Foto Satwa</label>
+                <input type="text" name="url_foto" value="{{ satwa.foto }}" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Simpan</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

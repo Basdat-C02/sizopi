@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block meta %}
+<title> Daftar Habitat </title>
+{% endblock meta %}
+
+{% block content %}
+<div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center p-3 p-md-5">
+    <div class="d-flex flex-column justify-content-between align-items-center mb-4">
+        <h1 class="text-center display-4 fw-bold mb-3 mb-md-5">Daftar Habitat</h1>
+        <a href="" class="btn btn-secondary mb-3 bg-success align-items-center" style="width: auto;">Tambah Data Habitat</a>
+    </div>
+    
+    <!-- Desktop View - Full Table -->
+    <div class="table-responsive-xl table-container w-100 d-none d-md-block">
+        <table class="table table-bordered table-striped table-hover text-center align-middle custom-table">
+            <thead class="table-light">
+                <tr>
+                    <th class="col-name">Nama Habitat</th>
+                    <th class="col-area">Luas Area</th>
+                    <th class="col-capacity">Kapasitas Maksimal</th>
+                    <th class="col-status">Status Lingkungan</th>
+                    <th class="col-action">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for habitat in daftar_habitat %}
+                <tr>
+                    <td>{{ habitat.nama }}</td>
+                    <td>{{ habitat.luas_area }} m2</td>
+                    <td>{{ habitat.kapasitas }} Hewan</td>
+                    <td>{{ habitat.status }}</td>
+                    <td>
+                        <div class="d-flex gap-2 justify-content-center flex-wrap">
+                            <a href="#" class="btn btn-warning btn-sm">Detail</a>
+                            <a href="#" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="#" class="btn btn-danger btn-sm">Hapus</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Mobile View - Card Style for smaller screens -->
+    <div class="d-md-none w-100">
+        {% for habitat in daftar_habitat %}
+        <div class="card mb-3 custom-card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">{{ habitat.nama }}</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Luas Area:</strong> {{ habitat.luas_area }} m2</p>
+                <p><strong>Kapasitas:</strong> {{ habitat.kapasitas }} Hewan</p>
+                <p><strong>Status:</strong> {{ habitat.status }}</p>
+                <div class="d-flex gap-2 justify-content-center mt-3">
+                    <a href="#" class="btn btn-warning btn-sm">Detail</a>
+                    <a href="#" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="#" class="btn btn-danger btn-sm">Hapus</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <style>
+        /* Styling untuk table */
+        .custom-table {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .custom-table thead th {
+            background-color: rgb(174, 231, 159);
+            vertical-align: middle;
+        }
+        
+        /* Mengatur lebar kolom untuk tampilan desktop */
+        .col-name, .col-area, .col-capacity {
+            width: 20%;
+        }
+        
+        .col-status {
+            width: 30%;
+        }
+        
+        .col-action {
+            width: 10%;
+        }
+        
+        /* Styling untuk card (mobile view) */
+        .custom-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* Responsivitas tambahan */
+        @media (max-width: 768px) {
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            h1.display-4 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</div>
+{% endblock content %}
