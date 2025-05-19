@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block meta %}
+<title>Profil {{ data_profile.peran }}</title>
+{% endblock meta %}
+
+{% block content %}
+<div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center p-5">
+    <h2 class="text-center mb-4 display-4 fw-bold text-success">Profil {{ data_profile.role }}</h2>
+    {% if messages %}
+    <div id="flash-message-wrapper" class="mt-3" style="width: 100%; max-width: 800px;">
+    {% for message in messages %}
+        <div id="flash-message" class="alert 
+            {% if message.tags == 'success' %}alert-success
+            {% elif message.tags == 'error' %}alert-danger
+            {% elif message.tags == 'warning' %}alert-warning
+            {% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    </div>
+    {% endif %}
+    <div class="card shadow-lg rounded-4" style="width: 90%; max-width: 800px;">
+        <div class="card-header bg-success text-white p-3 rounded-top-4">
+            <h3 class="mb-0 text-center">{{ data_profile.nama_lengkap }}</h3>
+        </div>
+        
+        <div class="card-body p-4">
+            <div class="row">
+                <!-- Personal Information Column -->
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <div class="card h-100 border-0 shadow-sm rounded-3 bg-light">
+                        <div class="card-header bg-success bg-opacity-10 border-bottom-0">
+                            <h5 class="mb-0 text-success"><i class="bi bi-person-circle me-2"></i>Informasi Pribadi</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3 d-flex">
+                                <div class="text-secondary fw-bold" style="width: 120px;">Username:</div>
+                                <div>{{ data_profile.username }}</div>
+                            </div>
+                            <div class="mb-3 d-flex">
+                                <div class="text-secondary fw-bold" style="width: 120px;">Email:</div>
+                                <div>{{ data_profile.email }}</div>
+                            </div>
+                            <div class="mb-3 d-flex">
+                                <div class="text-secondary fw-bold" style="width: 120px;">Nomor Telepon:</div>
+                                <div>{{ data_profile.no_telepon }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Professional Information Column -->
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm rounded-3 bg-light">
+                        <div class="card-header bg-success bg-opacity-10 border-bottom-0">
+                            <h5 class="mb-0 text-success"><i class="bi bi-award me-2"></i>Informasi Profesional</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3 d-flex">
+                                <div class="text-secondary fw-bold" style="width: 120px;">No STR:</div>
+                                <div>{{ data_profile.no_str }}</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="text-secondary fw-bold mb-2">Spesialisasi:</div>
+                                <div class="ps-3">
+                                    {% for spesialis in data_profile.spesialisasi %}
+                                    <div class="badge bg-success bg-opacity-75 text-dark p-2 mb-1 rounded-pill">
+                                        <i class="bi bi-check-circle-fill me-1"></i>{{ spesialis }}
+                                    </div>
+                                    {% if not forloop.last %}<br>{% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Statistics -->
+            <div class="mt-4">
+                <div class="card border-0 shadow-sm rounded-3 bg-success bg-opacity-10">
+                    <div class="card-body p-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h5 class="text-success mb-0"><i class="bi bi-bar-chart-fill me-2"></i>Statistik</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center">
+                                    <div class="text-secondary fw-bold me-3">Jumlah Hewan Ditangani:</div>
+                                    <div class="badge bg-success text-white p-2 rounded-pill fs-6">
+                                        {{ data_profile.jumlah_hewan }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-footer bg-light p-3 text-center rounded-bottom-4">
+            <small class="text-muted">Terakhir diperbarui: {% now "j F Y" %}</small>
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function () {
+        const flash = document.getElementById("flash-message");
+        if (flash) {
+        flash.classList.remove("show");
+        flash.classList.add("fade");
+        setTimeout(() => flash.remove(), 500);
+        }
+    }, 3000); // 3 detik
+</script>
+{% endblock content %}

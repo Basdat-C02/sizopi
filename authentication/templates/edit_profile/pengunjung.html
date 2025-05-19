@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block meta %}
+<title>Pengaturan Profil</title>
+{% endblock meta %}
+
+{% block content %}
+<div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="border shadow-sm p-4 rounded-3 bg-white" style="width: 500px;">
+        <h1 class="text-center mb-4">Pengaturan Profil {{data_pengunjung.role}}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label>Username</label>
+                <input type="text" name="username" value="{{data_pengunjung.username}}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nama Depan</label>
+                <input type="text" name="nama_depan" value="{{data_pengunjung.nama_depan}}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nama Tengah (Opsional)</label>
+                <input type="text" name="nama_tengah" value="{{ data_pengunjung.nama_tengah|default_if_none:'' }}" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>Nama Belakang</label>
+                <input type="text" name="nama_belakang" value="{{data_pengunjung.nama_belakang}}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" name="email" value="{{data_pengunjung.email}}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nomor Telepon</label>
+                <input type="text" name="no_telepon" value="{{data_pengunjung.no_telepon}}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Alamat Lengkap</label>
+                <input type="text" name="alamat" value="{{data_pengunjung.alamat}}" class="form-control" required>
+            </div>
+            <div class="mb-4">
+                <label>Tanggal Lahir</label>
+                <input type="date" name="tanggal_lahir" value="{{ data_pengunjung.tgl_lahir|date:'Y-m-d' }}" class="form-control" required>
+            </div>
+            <div class="d-flex flex-column gap-2">
+                <button type="submit" class="btn btn-success w-100">Simpan</button>
+                <a href="{% url 'authentication:change_password' %}" class="btn btn-secondary w-100">Ubah Password</a>
+                <a href="{% url 'authentication:profile_pengguna' %}" class="btn btn-secondary w-100">Batal</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

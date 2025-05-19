@@ -1,0 +1,190 @@
+-- Query untuk membuat setiap tabel
+
+CREATE SCHEMA SIZOPI;
+
+SET search_path TO SIZOPI;
+
+CREATE TABLE PENGGUNA (
+    username VARCHAR(50) PRIMARY KEY,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    nama_depan VARCHAR(50) NOT NULL,
+    nama_tengah VARCHAR(50) NULL,
+    nama_belakang VARCHAR(50) NOT NULL,
+    no_telepon VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE PENGUNJUNG (
+    username_P VARCHAR(50) PRIMARY KEY,
+    alamat VARCHAR(200) NOT NULL,
+    tgl_lahir DATE NOT NULL,
+    FOREIGN KEY (username_P) REFERENCES PENGGUNA(username) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE DOKTER_HEWAN (
+    username_DH VARCHAR(50) PRIMARY KEY,
+    no_STR VARCHAR(50) NOT NULL,
+    FOREIGN KEY (username_DH) REFERENCES PENGGUNA(username) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE SPESIALISASI (
+    username_SH VARCHAR(50),
+    nama_spesialisasi VARCHAR(100),
+    PRIMARY KEY (username_SH, nama_spesialisasi),
+    FOREIGN KEY (username_SH) REFERENCES DOKTER_HEWAN(username_DH) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE PENJAGA_HEWAN (
+    username_jh VARCHAR(50) PRIMARY KEY,
+    id_staf UUID NOT NULL,
+    FOREIGN KEY (username_jh) REFERENCES PENGGUNA(username) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE PELATIH_HEWAN (
+    username_lh VARCHAR(50) PRIMARY KEY,
+    id_staf UUID NOT NULL,
+    FOREIGN KEY (username_lh) REFERENCES PENGGUNA(username) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE STAF_ADMIN (
+    username_sa VARCHAR(50) PRIMARY KEY,
+    id_staf UUID NOT NULL,
+    FOREIGN KEY (username_sa) REFERENCES PENGGUNA(username) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE HEWAN (
+	id UUID PRIMARY KEY,
+	nama VARCHAR(100),
+	spesies VARCHAR(100) NOT NULL,
+	asal_hewan VARCHAR(100) NOT NULL,
+	tanggal_lahir DATE,
+	status_kesehatan VARCHAR(50) NOT NULL,
+	nama_habitat VARCHAR(100),
+    FOREIGN KEY (nama_habitat) REFERENCES HABITAT(nama) ON UPDATE CASCADE ON DELETE CASCADE,
+    url_foto VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE CATATAN_MEDIS (
+	id_hewan UUID,
+	FOREIGN KEY (id_hewan) REFERENCES HEWAN(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	username_dh VARCHAR(50),
+	FOREIGN KEY (username_dh) REFERENCES DOKTER_HEWAN(username_DH) ON UPDATE CASCADE ON DELETE CASCADE,
+    tanggal_pemeriksaan DATE,
+    PRIMARY KEY (id_hewan, tanggal_pemeriksaan),
+    diagnosis VARCHAR(100),
+    pengobatan VARCHAR(100),
+    status_kesehatan VARCHAR(50) NOT NULL,
+    catatan_tindak_lanjut VARCHAR(100)
+);
+
+CREATE TABLE HABITAT (
+	nama VARCHAR(50) PRIMARY KEY,
+	luas_area DECIMAL NOT NULL,
+	kapasitas INT NOT NULL,
+	status VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE PAKAN (
+	id_hewan UUID,
+	FOREIGN KEY (id_hewan) REFERENCES HEWAN(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    jadwal TIMESTAMP,
+    PRIMARY KEY (id_hewan, jadwal),
+    jenis VARCHAR(50) NOT NULL,
+    jumlah INT NOT NULL,
+    status VARCHAR(50) NOT NULL 
+);
+
+CREATE TABLE MEMBERI (
+	id_hewan UUID PRIMARY KEY,
+	FOREIGN KEY (id_hewan) REFERENCES HEWAN(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	jadwal TIMESTAMP NOT NULL,
+	username_jh VARCHAR(50),
+	FOREIGN KEY (username_jh) REFERENCES PENJAGA_HEWAN(username_jh) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE FASILITAS (
+    nama VARCHAR(50) PRIMARY KEY,
+    jadwal TIMESTAMP NOT NULL,
+    kapasitas_max INT NOT NULL
+);
+
+CREATE TABLE ATRAKSI (
+    nama_atraksi VARCHAR(50) PRIMARY KEY,
+    lokasi VARCHAR(100) NOT NULL,
+    FOREIGN KEY (nama_atraksi) REFERENCES FASILITAS(nama) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE JADWAL_PENUGASAN (
+    username_lh VARCHAR(50) NOT NULL,
+    tgl_penugasan DATETIME NOT NULL,
+    nama_atraksi VARCHAR(50),
+    PRIMARY KEY (username_lh, tgl_penugasan),
+    FOREIGN KEY (username_lh) REFERENCES PELATIH_HEWAN(username_lh) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (nama_atraksi) REFERENCES ATRAKSI(nama_atraksi) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE BERPARTISIPASI (
+    nama_fasilitas VARCHAR(50) NOT NULL,
+    id_hewan UUID NOT NULL,
+    PRIMARY KEY (nama_fasilitas, id_hewan),
+    FOREIGN KEY (nama_fasilitas) REFERENCES FASILITAS(nama) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (id_hewan) REFERENCES HEWAN(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE JADWAL_PEMERIKSAAN_KESEHATAN (
+    id_hewan UUID NOT NULL,
+    tgl_pemeriksaan_selanjutnya DATE NOT NULL,
+    freq_pemeriksaan_rutin INT NOT NULL,
+    PRIMARY KEY (id_hewan, tgl_pemeriksaan_selanjutnya),
+    FOREIGN KEY (id_hewan) REFERENCES HEWAN(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE WAHANA (
+    nama_wahana VARCHAR(50) PRIMARY KEY,
+    peraturan TEXT NOT NULL,
+    FOREIGN KEY (nama_wahana) REFERENCES FASILITAS(nama) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE ADOPTER (
+    username_adopter VARCHAR(50) UNIQUE,
+    id_adopter UUID PRIMARY KEY,
+    total_kontribusi INT NOT NULL,
+    FOREIGN KEY (username_adopter) REFERENCES PENGUNJUNG(username_P) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE INDIVIDU (
+    nik CHAR(16) PRIMARY KEY,
+    nama VARCHAR(100) NOT NULL,
+    id_adopter UUID,
+    FOREIGN KEY (id_adopter) REFERENCES ADOPTER(id_adopter) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE ORGANISASI (
+    npp CHAR(8) PRIMARY KEY,
+    nama_organisasi VARCHAR(100) NOT NULL,
+    id_adopter UUID,
+    FOREIGN KEY (id_adopter) REFERENCES ADOPTER(id_adopter) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE ADOPSI (
+    id_adopter UUID, 
+    id_hewan UUID,
+    status_pembayaran VARCHAR(10) NOT NULL,
+    tgl_mulai_adopsi DATE,
+    tgl_berhenti_adopsi DATE NOT NULL,
+    kontribusi_finansial INT NOT NULL,
+    PRIMARY KEY (id_adopter, id_hewan, tgl_mulai_adopsi),
+    FOREIGN KEY (id_adopter) REFERENCES ADOPTER(id_adopter) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (id_hewan) REFERENCES HEWAN(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE RESERVASI (
+    username_p VARCHAR(50),
+    nama_atraksi VARCHAR(50), 
+    tanggal_kunjungan DATE,
+    jumlah_tiket INT NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    PRIMARY KEY (username_p, nama_atraksi, tanggal_kunjungan),
+    FOREIGN KEY (username_p) REFERENCES PENGUNJUNG(username_P) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (nama_atraksi) REFERENCES ATRAKSI(nama_atraksi) ON UPDATE CASCADE ON DELETE CASCADE
+);
