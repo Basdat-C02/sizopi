@@ -172,18 +172,48 @@ def update_profile_view(request):
     
     template = ""
     if role == "Pengunjung":
-        template = "profile/pengunjung.html"
+        template = "edit_profile/pengunjung.html"
         context_name = "data_pengunjung"
     elif role == "Dokter Hewan":
-        template = "profile/dokter_hewan.html"
+        template = "edit_profile/dokter_hewan.html"
         context_name = "data_profile"
     elif role in ["Penjaga Hewan", "Pelatih Hewan", "Staf Admin"]:
-        template = "profile/staf.html"
+        template = "edit_profile/staf.html"
         context_name = "data_profile"
     else:
         messages.error(request, "Peran tidak dikenali.")
         return redirect("authentication:login")
     return render(request, template, {context_name: data})
+
+def change_password_view(request):
+    if not request.user.get("is_authenticated"):
+        return redirect("authentication:login")
+    
+    if request.method == 'POST':
+        username = request.user["username"]
+        old_password = request.POST.get("old_password")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_new_password")
+        
+        user = AuthService.get_user_by_username(username)
+        
+        if not user:
+            messages.error(request, "Username tidak ditemukan.")
+            return redirect("authentication:login")
+        
+        if old_password != user['password']:
+            messages.error(request, "Password lama salah.")
+            return redirect("authentication:change_password")
+        
+        if new_password != confirm_password:
+            messages.error(request, "Konfirmasi password tidak cocok.")
+            return redirect("authentication:change_password")
+        
+        AuthService.update_password(username, new_password)
+        messages.success(request, "Password berhasil diubah.")
+        return redirect("authentication:profile_pengguna")
+
+    return render(request, 'edit_profile/change_pw.html')
 
 def logout_view(request):
     response = redirect("authentication:login")

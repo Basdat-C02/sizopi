@@ -13,4 +13,6 @@ urlpatterns = [
     path("auth/logout/", logout_view, name="logout"),
     
     path('profile/profile-pengguna/', profile_view, name='profile_pengguna'),
+    path('profile/edit/', update_profile_view, name='edit_profile'),
+    path('profile/change-password/', change_password_view, name='change_password'),
 ]
