@@ -192,14 +192,7 @@ class AuthService:
         execute_query(sql, [data["alamat"], data["tgl_lahir"], data["username"]])
     
     @staticmethod
-    def update_dokter_hewan(data: dict):
-        sql = """
-        UPDATE sizopi.DOKTER_HEWAN
-        SET no_str = %s
-        WHERE username_dh = %s
-        """
-        execute_query(sql, [data["no_str"], data["username"]])
-        
+    def update_dokter_hewan(data: dict):        
         execute_query("DELETE FROM sizopi.SPESIALISASI WHERE username_sh = %s", [data["username"]])
         for spesialis in data.get("spesialisasi", []):
             execute_query(

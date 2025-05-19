@@ -137,6 +137,55 @@ def profile_view(request):
         messages.error(request, "Peran tidak dikenali.")
         return redirect("authentication:login")
 
+def update_profile_view(request):
+    if not request.user.get("is_authenticated"):
+        return redirect("authentication:login")
+    
+    role = request.user["role"]
+    username = request.user["username"]
+    data = AuthService.get_user_detail(username)
+    
+    if request.method == 'POST':
+        updated_data = {
+            "username": username,
+            "nama_depan": request.POST.get("nama_depan"),
+            "nama_tengah": request.POST.get("nama_tengah"),
+            "nama_belakang": request.POST.get("nama_belakang"),
+            "email": request.POST.get("email"),
+            "no_telepon": request.POST.get("no_telepon"),
+            "role": role
+        }
+        if role == 'Pengunjung':
+            updated_data["alamat"] = request.POST.get("alamat")
+            updated_data["tgl_lahir"] = request.POST.get("tanggal_lahir")
+        elif role == 'Dokter Hewan':
+            updated_data["no_str"] = request.POST.get("no_str")
+            updated_data["spesialisasi"] = request.POST.getlist("spesialisasi")
+            lainnya = request.POST.get("spesialisasi_lainnya")
+            if lainnya:
+                updated_data["spesialisasi"].append(lainnya)
+        elif role in ["Penjaga Hewan", "Pelatih Hewan", "Staf Admin"]:
+            updated_data["id_staf"] = request.POST.get("id_staf")
+        
+        AuthService.update_profile(updated_data)
+        messages.success(request, "Profil berhasil diperbarui.")
+        return redirect("authentication:profile_pengguna")
+    
+    template = ""
+    if role == "Pengunjung":
+        template = "profile/pengunjung.html"
+        context_name = "data_pengunjung"
+    elif role == "Dokter Hewan":
+        template = "profile/dokter_hewan.html"
+        context_name = "data_profile"
+    elif role in ["Penjaga Hewan", "Pelatih Hewan", "Staf Admin"]:
+        template = "profile/staf.html"
+        context_name = "data_profile"
+    else:
+        messages.error(request, "Peran tidak dikenali.")
+        return redirect("authentication:login")
+    return render(request, template, {context_name: data})
+
 def logout_view(request):
     response = redirect("authentication:login")
     response.delete_cookie("jwt")

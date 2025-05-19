@@ -6,45 +6,44 @@
 {% block content %}
 <div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
     <div class="border shadow-sm p-4 rounded-3 bg-white" style="width: 500px;">
-        <h1 class="text-center mb-4">Pengaturan Profil</h1>
+        <h1 class="text-center mb-4">Pengaturan Profil {{data_profile.role}}</h1>
         <form method="post">
             {% csrf_token %}
             <div class="mb-3">
                 <label>Username</label>
-                <input type="text" name="username" value="ariq.maulana" class="form-control" required>
+                <input type="text" name="username" value="{{data_profile.username}}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Id Staf</label>
+                <input type="text" name="id_staf" value="{{data_profile.id_staf}}" class="form-control" readonly>
             </div>
             <div class="mb-3">
                 <label>Nama Depan</label>
-                <input type="text" name="nama_depan" value="Ariq" class="form-control" required>
+                <input type="text" name="nama_depan" value="{{data_profile.nama_depan}}" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label>Nama Tengah (Opsional)</label>
-                <input type="text" name="nama_tengah" value="Maulana" class="form-control">
+                <input type="text" name="nama_tengah" value="{{data_profile.nama_tengah}}" class="form-control">
             </div>
             <div class="mb-3">
                 <label>Nama Belakang</label>
-                <input type="text" name="nama_belakang" value="Malik" class="form-control" required>
+                <input type="text" name="nama_belakang" value="{{data_profile.nama_belakang}}" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label>Email</label>
-                <input type="email" name="email" value="ariq.maulana@gmail.com" class="form-control" required>
+                <input type="email" name="email" value="{{data_profile.email}}" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label>Nomor Telepon</label>
-                <input type="text" name="no_telepon" value="081234568090" class="form-control" required>
+                <input type="text" name="no_telepon" value="{{data_profile.no_telepon}}" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label>Peran</label><br>
-                <select name="peran" class="form-select" required>
-                    <option value="">-- Pilih Peran --</option>
-                    <option value="Penjaga Hewan">Penjaga Hewan</option>
-                    <option value="Staf Administrasi">Staf Administrasi</option>
-                    <option value="Pelatih Pertunjukan">Pelatih Pertunjukan</option>
-                </select>
+                <input type="text" value="{{ data_profile.role }}" class="form-control" readonly>
             </div>
             <div class="d-flex flex-column gap-2">
                 <button type="submit" class="btn btn-success w-100">Simpan</button>
-                <button type="submit" class="btn btn-success w-100">Batal</button>
+                <button href="{% url 'authentication:profile_pengguna' %}" class="btn btn-success w-100">Batal</button>
             </div>
         </form>
     </div>
