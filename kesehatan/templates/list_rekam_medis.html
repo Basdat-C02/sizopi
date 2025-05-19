@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Daftar Hewan</h1>
+
+    {% if hewan_list %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for hewan in hewan_list %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="{{ hewan.url_foto }}" class="card-img-top" alt="Foto {{ hewan.nama }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ hewan.nama }}</h5>
+                            <p class="card-text">
+                                <strong>Spesies:</strong> {{ hewan.spesies }}<br>
+                                <strong>Status Kesehatan:</strong> {{ hewan.status_kesehatan }}
+                            </p>
+                            <a href="{% url 'kesehatan:rekam_medis_hewan' hewan.id %}" class="btn btn-primary btn-sm">
+                                Lihat Rekam Medis
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">Tidak ada hewan yang tersedia.</p>
+    {% endif %}
+</div>
+{% endblock content %}
