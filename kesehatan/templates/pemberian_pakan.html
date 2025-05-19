@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- Header Section -->
+    <div class="text-center mb-4 mx-auto">
+        <h1 class="display-5 mb-3 mx-auto">Pemberian Pakan Hewan</h1>
+        <div class="mx-auto" style="width: 80px; height: 2px; background-color: #dee2e6;"></div>
+    </div>
+
+    <!-- Create Pemberian Pakan Button  -->
+    <div class="mb-4">
+        <button class="btn btn-success d-flex align-items-center" 
+                data-bs-toggle="modal" data-bs-target="#createFeedingModal">
+            <i class="fas fa-plus me-2"></i>
+            Tambah Jadwal Pakan
+        </button>
+    </div>
+
+    <!-- Main Table  -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0 text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="py-3">Jenis Pakan</th>
+                                    <th class="py-3">Jumlah</th>
+                                    <th class="py-3">Jadwal</th>
+                                    <th class="py-3">Status</th>
+                                    <th class="py-3">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in jadwal_list %}
+                                <tr>
+                                    <td class="py-3">{{ item.pakan.jenis }}</td>
+                                    <td class="py-3">{{ item.pakan.jumlah }} gram</td>
+                                    <td class="py-3">{{ item.pakan.jadwal }}</td>
+                                    <td class="py-3">
+                                        <span class="badge rounded-pill 
+                                            {% if item.pakan.status == 'Selesai Diberikan' %}bg-success bg-opacity-10 text-success
+                                            {% else %}bg-warning bg-opacity-10 text-warning{% endif %}">
+                                            {{ item.pakan.status }}
+                                        </span>
+                                    </td>
+                                    <td class="py-3">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <form method="POST" action="{% url 'kesehatan:beri_pakan' pk=id_hewan %}">
+                                                {% csrf_token %}
+                                                <button class="btn btn-sm btn-outline-success">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                            </form>
+                                            <button class="btn btn-sm btn-outline-primary" 
+                                                    data-bs-toggle="modal" data-bs-target="#editFeedingModal">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger" 
+                                                    data-bs-toggle="modal" data-bs-target="#deleteFeedingModal">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="py-4 text-muted">
+                                        Tidak ada jadwal pemberian pakan
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createFeedingModal" tabindex="-1" aria-labelledby="createFeedingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createFeedingModalLabel">Tambah Jadwal Pakan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'kesehatan:create_pemberian_pakan' pk=id_hewan %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="jenis" class="form-label">Jenis Pakan:</label>
+                        <input type="text" name="jenis" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="jumlah" class="form-label">Jumlah (kg):</label>
+                        <input type="number" name="jumlah" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="jadwal" class="form-label">Jadwal Pemberian:</label>
+                        <input type="datetime-local" name="jadwal" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-success">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editFeedingModal" tabindex="-1" aria-labelledby="editFeedingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editFeedingModalLabel">Edit Jadwal Pakan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="jenis" class="form-label">Jenis Pakan Baru:</label>
+                        <input type="text" name="jenis" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="jumlah" class="form-label">Jumlah Pakan Baru (gram):</label>
+                        <input type="number" name="jumlah" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="jadwal" class="form-label">Jadwal Baru:</label>
+                        <input type="datetime-local" name="jadwal" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteFeedingModal" tabindex="-1" aria-labelledby="deleteFeedingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteFeedingModalLabel">Hapus Jadwal Pakan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus jadwal pakan ini?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                <form method="POST" action="{% url 'kesehatan:delete_pemberian_pakan' pk=id_hewan %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Ya</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
