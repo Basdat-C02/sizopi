@@ -1,201 +1,220 @@
-from django.shortcuts import render
+import uuid
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from authentication.services.auth_service import AuthService
+from authentication.utils.jwt_utils import generate_jwt
+
 
 # Create your views here.
-def home_view(request):
-    return render(request, 'main/index.html', {'is_authenticated': False})
-
-def login_view(request):
-    return render(request, 'login/index.html', {'is_authenticated': False})
+def landing_view(request):
+    return render(request, 'landing/index.html')
 
 def choose_role_view(request):
     return render(request, 'choose_role/index.html', {'is_authenticated': False})
 
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = AuthService.get_user_by_username(username)
+        if not user:
+            messages.error(request, 'Username tidak ditemukan')
+            return redirect('authentication:login')
+        
+        if password != user['password']:
+            return redirect('authentication:login')
+        
+        token = generate_jwt(username)
+        response = redirect('authentication:profile_pengguna')
+        response.set_cookie('jwt', token, httponly=True, samesite='Strict')
+        return response
+        
+    return render(request, 'login/index.html')
+
 def register_pengunjung_view(request):
     if request.method == 'POST':
-        # Validasi dan logika buat akun
-        pass
-    return render(request, 'register_pengunjung/index.html', {'is_authenticated': False})
+        data = {
+            "username": request.POST.get("username"),
+            "password": request.POST.get("password"),
+            "email": request.POST.get("email"),
+            "nama_depan": request.POST.get("nama_depan"),
+            "nama_tengah": request.POST.get("nama_tengah"),
+            "nama_belakang": request.POST.get("nama_belakang"),
+            "no_telepon": request.POST.get("no_telepon"),
+            "alamat": request.POST.get("alamat"),
+            "tgl_lahir": request.POST.get("tanggal_lahir"),
+            "role": "Pengunjung",
+        }
+        
+        if request.POST.get("password") != request.POST.get("confirm_password"):
+            messages.error(request, "Konfirmasi password tidak cocok.")
+            return redirect("authentication:register_pengunjung") 
+        
+        AuthService.create_profile(data)
+        messages.success(request, "Registrasi berhasil. Silakan login.")
+        return redirect("authentication:login")
+
+    return render(request, 'register/pengunjung.html')
 
 def register_dokter_hewan_view(request):
     if request.method == 'POST':
-        # Validasi dan logika buat akun
-        pass
-    return render(request, 'register_dokter/index.html', {'is_authenticated': False})
+        spesialisasi = request.POST.getlist("spesialisasi")
+        lainnya = request.POST.get("spesialisasi_lainnya")
+        if lainnya:
+            spesialisasi.append(lainnya)
+        data = {
+            "username": request.POST.get("username"),
+            "password": request.POST.get("password"),
+            "email": request.POST.get("email"),
+            "nama_depan": request.POST.get("nama_depan"),
+            "nama_tengah": request.POST.get("nama_tengah"),
+            "nama_belakang": request.POST.get("nama_belakang"),
+            "no_telepon": request.POST.get("no_telepon"),
+            "no_str": request.POST.get("no_str"),
+            "spesialisasi": spesialisasi,
+            "role": "Dokter Hewan",
+        }
+        
+        if request.POST.get("password") != request.POST.get("confirm_password"):
+            messages.error(request, "Konfirmasi password tidak cocok.")
+            return redirect("authentication:register_pengunjung") 
+        
+        AuthService.create_profile(data)
+        messages.success(request, "Registrasi berhasil. Silakan login.")
+        return redirect("authentication:login")
+    
+    return render(request, 'register/dokter_hewan.html')
 
 def register_staff_view(request):
     if request.method == 'POST':
-        # Validasi dan logika buat akun
-        pass
-    return render(request, 'register_staff/index.html', {'is_authenticated': False})
+        peran = request.POST.get("peran")
+        id_staf = str(uuid.uuid4())
+        data = {
+            "username": request.POST.get("username"),
+            "password": request.POST.get("password"),
+            "email": request.POST.get("email"),
+            "nama_depan": request.POST.get("nama_depan"),
+            "nama_tengah": request.POST.get("nama_tengah"),
+            "nama_belakang": request.POST.get("nama_belakang"),
+            "no_telepon": request.POST.get("no_telepon"),
+            "role": peran,
+            "id_staf": id_staf
+        }
+        
+        if request.POST.get("password") != request.POST.get("confirm_password"):
+            messages.error(request, "Konfirmasi password tidak cocok.")
+            return redirect("authentication:register_pengunjung") 
+        
+        AuthService.create_profile(data)
+        messages.success(request, "Registrasi berhasil. Silakan login.")
+        return redirect("authentication:login")
 
-def profile_pengunjung_view(request):
-    pengunjung_data = {
-        "nama_lengkap": "Alya Putri Ramadhani",
-        "username": "alya.ramadhani",
-        "email": "alya.ramadhani@gmail.com",
-        "no_telepon": "6281234567890",
-        "peran": "Pengunjung",
-        "alamat_lengkap": "Jl. Mawar No. 23, Bandung, Jawa Barat, Indonesia",
-        "tanggal_lahir": "2001-07-15",
-        "riwayat_kunjungan": [
-            {
-                "nama_atraksi": "Safari Malam",
-                "lokasi": "Zona Savanna",
-                "tanggal_kunjungan": "2024-11-20",
-                "status_reservasi": "Sukses"
-            },
-            {
-                "nama_atraksi": "Pertunjukan Burung",
-                "lokasi": "Amphitheater",
-                "tanggal_kunjungan": "2025-01-05",
-                "status_reservasi": "Sukses"
-            },
-            {
-                "nama_atraksi": "Interaksi Satwa Jinak",
-                "lokasi": "Zona Hutan Tropis",
-                "tanggal_kunjungan": "2025-03-12",
-                "status_reservasi": "Sukses"
-            }
-        ],
-        "informasi_tiket_dibeli": [
-            {
-                "nama_atraksi": "Safari Malam",
-                "jumlah_tiket": 2
-            },
-            {
-                "nama_atraksi": "Pertunjukan Burung",
-                "jumlah_tiket": 1
-            },
-            {
-                "nama_atraksi": "Interaksi Satwa Jinak",
-                "jumlah_tiket": 3
-            }
-        ]
-    }
-    context = {
-        'data_pengunjung': pengunjung_data,
-        'user_role': 'pengunjung',
-        'is_authenticated': True,
-    }
-    return render(request, 'profile/pengunjung.html', context)
+    return render(request, 'register/staf.html')
 
-def profile_dokter_hewan_view(request):
-    data_profile = {
-        'nama_lengkap': 'Farhan Nur Hakim',
-        'username': 'farhan.nur',
-        'email': 'farhan.hakim@gmail.com',
-        'nomor_telepon': '081234568050',
-        'peran': 'Dokter Hewan',
-        'no_str': 'STR-001',
-        'spesialisasi': ['Bedah Hewan', 'Mamalia Besar'],
-        'jumlah_hewan_ditangani': 45
-    }
-    context = {
-        'data_profile': data_profile, 
-        'user_role': 'dokter_hewan',
-        'is_authenticated': True,
-    }
-    return render(request, 'profile/dokter_hewan.html', context)
+def profile_view(request):
+    if not request.user.get("is_authenticated"):
+        return redirect("authentication:login")
 
-def profile_penjaga_hewan_view(request):
-    data_profile = {
-        'nama_lengkap': 'Bima Prasetya',
-        'username': 'bima.prasetya',
-        'email': 'bima.prasetya@gmail.com',
-        'nomor_telepon': '081234567892',
-        'peran': 'Penjaga Hewan',
-        'id_staf': '3265abbf-8b32-4f94-b4f1-b3bb5567bff0',
-        'jumlah_hewan_diberi_pakan': 120
-    }
-    context = {
-        'data_profile': data_profile, 
-        'user_role': 'penjaga_hewan',
-        'is_authenticated': True,
-    }
-    return render(request, 'profile/penjaga_hewan.html', context)
+    role = request.user["role"]
+    username = request.user["username"]
+    
+    data = AuthService.get_user_detail(username)
 
-def profile_staf_admin_view(request):
-    data_profile = {
-        'nama_lengkap': 'Ariq Maulana Malik',
-        'username': 'ariq.maulana',
-        'email': 'ariq.maulana@gmail.com',
-        'nomor_telepon': '081234568090',
-        'peran': 'Staf Administrasi',
-        'id_staf': 'a404d027-154b-49a6-bb7a-6a21e686eb5a',
-        'ringkasan_penjualan_tiket': 1500000,
-        'jumlah_pengunjung_hari_ini': 320,
-        'laporan_pendapatan_mingguan': 9500000
-    }
-    context = {
-        'data_profile': data_profile, 
-        'user_role': 'staf_admin',
-        'is_authenticated': True,
-    }
-    return render(request, 'profile/staf_admin.html', context)
+    if role == "Pengunjung":
+        print(data)
+        return render(request, "profile/pengunjung.html", {"data_pengunjung": data})
+    elif role == "Dokter Hewan":
+        return render(request, "profile/dokter_hewan.html", {"data_profile": data})
+    elif role == "Penjaga Hewan":
+        return render(request, "profile/penjaga_hewan.html", {"data_profile": data})
+    elif role == "Pelatih Hewan":
+        return render(request, "profile/pelatih_hewan.html", {"data_profile": data})
+    elif role == "Staf Admin":
+        return render(request, "profile/staf_admin.html", {"data_profile": data})
+    else:
+        messages.error(request, "Peran tidak dikenali.")
+        return redirect("authentication:login")
 
-def profile_pelatih_hewan_view(request):
-    data_profile = {
-        'nama_lengkap': 'Amanda Putri',
-        'username': 'amanda.putri',
-        'email': 'amanda.putri@gmail.com',
-        'nomor_telepon': '081234568080',
-        'peran': 'Staf Pelatih Pertunjukan',
-        'id_staf': '3e02c96a-b6db-4e03-b8ba-0baf1021eb56',
-        'jadwal_pertunjukan_hari_ini': [
-            {
-                'waktu': '2025-05-01 07:00:00',
-                'nama_pertunjukan': 'Pertunjukan Singa'
-            },
-            {
-                'waktu': '2025-05-01 09:00:00',
-                'nama_pertunjukan': 'Atraksi Burung'
-            }
-        ],
-        'daftar_hewan_dilatih': ['Singa Leo', 'Burung Koko'],
-    }
-    context = {
-        'data_profile': data_profile, 
-        'user_role': 'pelatih_hewan',
-        'is_authenticated': True,
-    }
-    return render(request, 'profile/pelatih.html', context)
-
-def edit_profile_pengunjung_view(request):
+def update_profile_view(request):
+    if not request.user.get("is_authenticated"):
+        return redirect("authentication:login")
+    
+    role = request.user["role"]
+    username = request.user["username"]
+    data = AuthService.get_user_detail(username)
+    
     if request.method == 'POST':
-        # Proses penyimpanan data yang diedit
-        pass
-    context = { 
-        'user_role': 'pengunjung',
-        'is_authenticated': True,
-    }
-    return render(request, 'edit_profile/pengunjung.html', context)
+        updated_data = {
+            "username": username,
+            "nama_depan": request.POST.get("nama_depan"),
+            "nama_tengah": request.POST.get("nama_tengah"),
+            "nama_belakang": request.POST.get("nama_belakang"),
+            "email": request.POST.get("email"),
+            "no_telepon": request.POST.get("no_telepon"),
+            "role": role
+        }
+        '''Hanya Pengunjung dan Dokter Hewan yang memiliki atribut tambahan yang bisa diupdate, no_str dan id_staf tidak bisa diupdate'''
+        if role == 'Pengunjung':
+            updated_data["alamat"] = request.POST.get("alamat")
+            updated_data["tgl_lahir"] = request.POST.get("tanggal_lahir")
+            
+        elif role == 'Dokter Hewan':
+            updated_data["spesialisasi"] = request.POST.getlist("spesialisasi")
+            lainnya = request.POST.get("spesialisasi_lainnya")
+            if lainnya and lainnya.strip():
+                updated_data["spesialisasi"].append(lainnya.strip())
+        
+        AuthService.update_profile(updated_data)
+        messages.success(request, "Profil berhasil diperbarui.")
+        return redirect("authentication:profile_pengguna")
+    
+    template = ""
+    if role == "Pengunjung":
+        template = "edit_profile/pengunjung.html"
+        context_name = "data_pengunjung"
+    elif role == "Dokter Hewan":
+        template = "edit_profile/dokter_hewan.html"
+        context_name = "data_profile"
+    elif role in ["Penjaga Hewan", "Pelatih Hewan", "Staf Admin"]:
+        template = "edit_profile/staf.html"
+        context_name = "data_profile"
+    else:
+        messages.error(request, "Peran tidak dikenali.")
+        return redirect("authentication:login")
+    return render(request, template, {context_name: data})
 
-def edit_profile_dokter_hewan_view(request):
+def change_password_view(request):
+    if not request.user.get("is_authenticated"):
+        return redirect("authentication:login")
+    
     if request.method == 'POST':
-        # Proses penyimpanan data yang diedit
-        pass
-    context = { 
-        'user_role': 'dokter_hewan',
-        'is_authenticated': True,
-    }
-    return render(request, 'edit_profile/dokter_hewan.html', context)
+        username = request.user["username"]
+        old_password = request.POST.get("old_password")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_new_password")
+        
+        user = AuthService.get_user_by_username(username)
+        
+        if not user:
+            messages.error(request, "Username tidak ditemukan.")
+            return redirect("authentication:login")
+        
+        if old_password != user['password']:
+            messages.error(request, "Password lama salah.")
+            return redirect("authentication:change_password")
+        
+        if new_password != confirm_password:
+            messages.error(request, "Konfirmasi password tidak cocok.")
+            return redirect("authentication:change_password")
+        
+        AuthService.update_password(username, new_password)
+        messages.success(request, "Password berhasil diubah.")
+        return redirect("authentication:profile_pengguna")
 
-def edit_profile_staff_view(request):
-    if request.method == 'POST':
-        # Proses penyimpanan data yang diedit
-        pass
-    context = { 
-        'user_role': 'staf_admin',
-        'is_authenticated': True,
-    }
-    return render(request, 'edit_profile/staff.html', context)
+    return render(request, 'edit_profile/change_pw.html')
 
-def ubah_password_view(request):
-    if request.method == 'POST':
-        # Proses penyimpanan data yang diedit
-        pass
-    context = { 
-        'user_role': 'pengunjung',
-        'is_authenticated': True,
-    }
-    return render(request, 'edit_profile/ubah_password.html', context)
+def logout_view(request):
+    response = redirect("authentication:login")
+    response.delete_cookie("jwt")
+    return response
