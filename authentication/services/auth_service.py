@@ -81,9 +81,9 @@ class AuthService:
     def create_profile(data: dict):
         AuthService.create_pengguna(data)
         role = data.get("role")
-        if role == "pengunjung":
+        if role == "Pengunjung":
             AuthService.create_pengunjung(data)
-        elif role == "dokter_hewan":
+        elif role == "Dokter Hewan":
             AuthService.create_dokter_hewan(data)
         else:
             AuthService.create_staff_member(data)
@@ -126,17 +126,17 @@ class AuthService:
     @staticmethod
     def create_staff_member(data: dict):
         sql = ""
-        if data["role"] == "staf_admin":
+        if data["role"] == "Staf Admin":
             sql = """
             INSERT INTO sizopi.STAF_ADMIN (username_sa, id_staf)
             VALUES (%s, %s)
             """
-        elif data["role"] == "penjaga_hewan":
+        elif data["role"] == "Penjaga Hewan":
             sql = """
             INSERT INTO sizopi.PENJAGA_HEWAN (username_jh, id_staf)
             VALUES (%s, %s)
             """
-        elif data["role"] == "pelatih_hewan":
+        elif data["role"] == "Pelatih Hewan":
             sql = """
             INSERT INTO sizopi.PELATIH_HEWAN (username_lh, id_staf)
             VALUES (%s, %s)

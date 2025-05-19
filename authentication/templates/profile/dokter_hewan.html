@@ -6,7 +6,7 @@
 
 {% block content %}
 <div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center p-5">
-    <h2 class="text-center mb-4 display-4 fw-bold text-success">Profil {{ data_profile.peran }}</h2>
+    <h2 class="text-center mb-4 display-4 fw-bold text-success">Profil {{ data_profile.role }}</h2>
     {% if messages %}
     <div id="flash-message-wrapper" class="mt-3" style="width: 100%; max-width: 800px;">
     {% for message in messages %}
@@ -45,7 +45,7 @@
                             </div>
                             <div class="mb-3 d-flex">
                                 <div class="text-secondary fw-bold" style="width: 120px;">Nomor Telepon:</div>
-                                <div>{{ data_profile.nomor_telepon }}</div>
+                                <div>{{ data_profile.no_telepon }}</div>
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                                 <div class="d-flex align-items-center">
                                     <div class="text-secondary fw-bold me-3">Jumlah Hewan Ditangani:</div>
                                     <div class="badge bg-success text-white p-2 rounded-pill fs-6">
-                                        {{ data_profile.jumlah_hewan_ditangani }}
+                                        {{ data_profile.jumlah_hewan }}
                                     </div>
                                 </div>
                             </div>
