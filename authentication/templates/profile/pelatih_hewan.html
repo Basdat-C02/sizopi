@@ -7,6 +7,20 @@
 {% block content %}
 <div style="background-color: #f2eab8; min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center p-5">
     <h2 class="text-center mb-4 display-4 fw-bold text-success">Profil {{ data_profile.peran }}</h2>
+        {% if messages %}
+    <div id="flash-message-wrapper" class="mt-3" style="width: 100%; max-width: 800px;">
+    {% for message in messages %}
+        <div id="flash-message" class="alert 
+            {% if message.tags == 'success' %}alert-success
+            {% elif message.tags == 'error' %}alert-danger
+            {% elif message.tags == 'warning' %}alert-warning
+            {% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    </div>
+    {% endif %}
     <div class="container">
         <div class="card shadow-lg rounded-3 border-0" style="max-width: 1000px; margin: 0 auto;">
             <div class="card-header bg-success bg-gradient text-white p-4 rounded-top-3">
@@ -104,4 +118,14 @@
         </div>
     </div>
 </div>
+<script>
+    setTimeout(function () {
+        const flash = document.getElementById("flash-message");
+        if (flash) {
+        flash.classList.remove("show");
+        flash.classList.add("fade");
+        setTimeout(() => flash.remove(), 500);
+        }
+    }, 3000); // 3 detik
+</script>
 {% endblock content %}

@@ -23,7 +23,6 @@ def login_view(request):
             return redirect('authentication:login')
         
         if password != user['password']:
-            messages.error(request, 'Password salah')
             return redirect('authentication:login')
         
         token = generate_jwt(username)

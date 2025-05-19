@@ -42,7 +42,7 @@
             </li>
             {% endif %} {% if is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link text-white" href="">Pengaturan Profil</a>
+                <a class="nav-link text-white" href="{% url 'authentication:edit_profile' %}">Pengaturan Profil</a>
             </li>
             <li class="nav-item">
                 <a class="btn btn-danger" href="{% url 'authentication:logout' %}">Logout</a>

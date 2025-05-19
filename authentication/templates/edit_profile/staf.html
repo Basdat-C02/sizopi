@@ -23,7 +23,7 @@
             </div>
             <div class="mb-3">
                 <label>Nama Tengah (Opsional)</label>
-                <input type="text" name="nama_tengah" value="{{data_profile.nama_tengah}}" class="form-control">
+                <input type="text" name="nama_tengah" value="{{ data_pengunjung.nama_tengah|default_if_none:'' }}" class="form-control">
             </div>
             <div class="mb-3">
                 <label>Nama Belakang</label>

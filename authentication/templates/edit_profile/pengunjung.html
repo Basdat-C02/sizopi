@@ -19,7 +19,7 @@
             </div>
             <div class="mb-3">
                 <label>Nama Tengah (Opsional)</label>
-                <input type="text" name="nama_tengah" value="{{data_pengunjung.nama_tengah}}" class="form-control">
+                <input type="text" name="nama_tengah" value="{{ data_pengunjung.nama_tengah|default_if_none:'' }}" class="form-control">
             </div>
             <div class="mb-3">
                 <label>Nama Belakang</label>
@@ -39,7 +39,7 @@
             </div>
             <div class="mb-4">
                 <label>Tanggal Lahir</label>
-                <input type="date" name="tanggal_lahir" value="{{data_pengunjung.tanggal_lahir}}" class="form-control" required>
+                <input type="date" name="tanggal_lahir" value="{{ data_pengunjung.tgl_lahir|date:'Y-m-d' }}" class="form-control" required>
             </div>
             <div class="d-flex flex-column gap-2">
                 <button type="submit" class="btn btn-success w-100">Simpan</button>
