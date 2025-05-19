@@ -155,17 +155,16 @@ def update_profile_view(request):
             "no_telepon": request.POST.get("no_telepon"),
             "role": role
         }
+        '''Hanya Pengunjung dan Dokter Hewan yang memiliki atribut tambahan yang bisa diupdate, no_str dan id_staf tidak bisa diupdate'''
         if role == 'Pengunjung':
             updated_data["alamat"] = request.POST.get("alamat")
             updated_data["tgl_lahir"] = request.POST.get("tanggal_lahir")
+            
         elif role == 'Dokter Hewan':
-            updated_data["no_str"] = request.POST.get("no_str")
             updated_data["spesialisasi"] = request.POST.getlist("spesialisasi")
             lainnya = request.POST.get("spesialisasi_lainnya")
-            if lainnya:
-                updated_data["spesialisasi"].append(lainnya)
-        elif role in ["Penjaga Hewan", "Pelatih Hewan", "Staf Admin"]:
-            updated_data["id_staf"] = request.POST.get("id_staf")
+            if lainnya and lainnya.strip():
+                updated_data["spesialisasi"].append(lainnya.strip())
         
         AuthService.update_profile(updated_data)
         messages.success(request, "Profil berhasil diperbarui.")

@@ -151,8 +151,6 @@ class AuthService:
             AuthService.update_pengunjung(data)
         elif role == "dokter_hewan":
             AuthService.update_dokter_hewan(data)
-        else:
-            AuthService.update_staff_member(data)
     
     @staticmethod
     def update_password(username: str, new_password: str):
@@ -201,29 +199,6 @@ class AuthService:
             )
     
     @staticmethod
-    def update_staff_member(data: dict):
-        sql = ""
-        if data["role"] == "staf_admin":
-            sql = """
-            UPDATE sizopi.STAF_ADMIN
-            SET id_staf = %s
-            WHERE username_sa = %s
-            """
-        elif data["role"] == "penjaga_hewan":
-            sql = """
-            UPDATE sizopi.PENJAGA_HEWAN
-            SET id_staf = %s
-            WHERE username_jh = %s
-            """
-        elif data["role"] == "pelatih_hewan":
-            sql = """
-            UPDATE sizopi.PELATIH_HEWAN
-            SET id_staf = %s
-            WHERE username_lh = %s
-            """
-        execute_query(sql, [data["id_staf"], data["username"]])
-    
-    @staticmethod
     def get_user_detail(username:str):
         user = AuthService.get_user_by_username(username)
         if not user:
@@ -269,15 +244,19 @@ class AuthService:
     def get_dokter_hewan_detail(data: dict):
         username = data["username"]
         
-        spesialisasi = fetch_dict_all("""
+        all_spesialisasi = fetch_dict_all("""
             SELECT nama_spesialisasi FROM sizopi.SPESIALISASI WHERE username_sh = %s
         """, [username])
+        
+        standar = ["Mamalia Besar", "Reptil", "Burung Eksotis", "Primata"]
+        semua = [s["nama_spesialisasi"] for s in all_spesialisasi]
         
         jumlah_hewan = fetch_dict_all("""
             SELECT COUNT(DISTINCT id_hewan) AS jumlah_hewan FROM sizopi.CATATAN_MEDIS WHERE username_dh = %s
         """, [username])
         
-        data["spesialisasi"] = [s["nama_spesialisasi"] for s in spesialisasi]
+        data["spesialisasi"] = [s for s in semua if s in standar]
+        data["spesialisasi_lainnya"] = [s for s in semua if s not in standar]
         data["jumlah_hewan"] = jumlah_hewan[0]["jumlah_hewan"] if jumlah_hewan else 0
         return data
     
